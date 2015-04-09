@@ -1,7 +1,6 @@
 # Summary
 
 * [Введение](README.md)
-* Введение
-* Обзор
+* [Обзор](Chapter1/Overview.md)
    * Что такое OpenCV?
 
