@@ -1,7 +1,7 @@
 # Содержание
 
 * [Введение](README.md)
-* [Обзор](Chapter1/Overview.md)
+* [1. Обзор](Chapter1/Overview.md)
     * [Что такое OpenCV?](Chapter1/WhatIsOpenCV.md)
     * [Кто использует OpenCV?](Chapter1/WhoUsesOpenCV.md)
     * [Что такое компьютерное зрение?](Chapter1/WhatIsComputerVision.md)
@@ -12,7 +12,7 @@
     * [Структура и содержание OpenCV](Chapter1/OpenCVStructureAndContent.md)
     * [Переносимость](Chapter1/Portability.md)
     * [Упражнения](Chapter1/Exercises.md)
-* [Введение в OpenCV](Chapter2/IntroductionToOpenCV.md)
+* [2. Введение в OpenCV](Chapter2/IntroductionToOpenCV.md)
     * [Приступая к работе](Chapter2/GettingStarted.md)
     * [Первая программа - Отображение картинки]()
     * [Вторая программа - AVI видео](Chapter2/.md)
