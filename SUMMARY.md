@@ -1,7 +1,7 @@
 # Содержание
 
-* [**Введение**](README.md)
-* [**Обзор**](Chapter1/Overview.md)
+[**Введение**](README.md)
+1/ [**Обзор**](Chapter1/Overview.md)
     * [Что такое OpenCV?](Chapter1/WhatIsOpenCV.md)
     * [Кто использует OpenCV?](Chapter1/WhoUsesOpenCV.md)
     * [Что такое компьютерное зрение?](Chapter1/WhatIsComputerVision.md)
@@ -12,7 +12,8 @@
     * [Структура и содержание OpenCV](Chapter1/OpenCVStructureAndContent.md)
     * [Переносимость](Chapter1/Portability.md)
     * [Упражнения](Chapter1/Exercises.md)
-* [**Введение в OpenCV**](Chapter2/IntroductionToOpenCV.md)
+
+2. [**Введение в OpenCV**](Chapter2/IntroductionToOpenCV.md)
     * [Приступая к работе](Chapter2/GettingStarted.md)
     * [Первая программа - Отображение картинки](Chapter2/FirstProgramDisplayPicture.md)
     * [Вторая программа - AVI видео](Chapter2/SecondProgramAVIVideo.md)
@@ -23,7 +24,8 @@
     * [Запись в фомате AVI](Chapter2/WritingToAnAviFile.md)
     * [Далее](Chapter2/Onward.md)
     * [Упражнения](Chapter2/Exercises.md)
-* [**Знакоство с OpenCV**](Chapter3/GettingToKnowOpenCV.md)
+
+3. [**Знакоство с OpenCV**](Chapter3/GettingToKnowOpenCV.md)
 	* [Примитивные типы данных в OpenCV](Chapter3/OpenCVPrimitiveDataTypes.md)
 	* [Структура CvMat](Chapter3/CvMatMatrixStructure.md)
 	* [Структура IplImage](Chapter3/IplImageDataStructure.md)
@@ -33,7 +35,7 @@
 	* [(!) Интегрированные примитивы производительности](Chapter3/IntegratedPerformancePrimitives.md)
 	* [Резюме](Chapter3/Summary.md)
 	* [Упражнения](Chapter3/Exercises.md)
-* [**HighGUI**](Chapter4/HighGUI.md)
+4. [**HighGUI**](Chapter4/HighGUI.md)
     * [Портативный Graphics Toolkit](Chapter4/PortableGraphicsToolkit.md)
     * [Создание окна](Chapter4/CreatingWindow.md)
     * [Загрузка изображения](Chapter4/LoadingImage.md)
@@ -41,7 +43,8 @@
     * [Работа с видео](Chapter4/WorkingWithVideo.md)
     * [Преобразование изображения](Chapter4/ConvertImage.md)
     * [Упражнения](Chapter4/Exercises.md)
-* [**Обработка изображения**](Chapter5/ImageProcessing.md)
+
+5. [**Обработка изображения**](Chapter5/ImageProcessing.md)
     * [Обзор](Chapter5/Overview.md)
     * [Сглаживание](Chapter5/Smoothing.md)
     * [(!) Морфологический разбор изображения](Chapter5/ImageMorphology.md)
@@ -51,7 +54,7 @@
     * [(!) Порог](Chapter5/Threshold.md)
     * [Упражнения](Chapter5/Exercises.md)
 
-* [**Преобразования изображений**](Chapter6/ImageTransforms.md)
+6. [**Преобразования изображений**](Chapter6/ImageTransforms.md)
     * [Обзор](Chapter6/Overview.md)
     * [Свертка](Chapter6/Convolution.md)
     * [(!)Производные градиент и собел](Chapter6/GradientsAndSobelDerivatives.md)
@@ -69,14 +72,14 @@
     * [(!)Гистограмма выравнивания](Chapter6/HistogramEqualization.md)
     * [Упражнения](Chapter6/Exercises.md)
 
-* [**(!)Histogram и соответствия**](Chapter7/HistogramsAndMatching.md)
+7. [**(!)Histogram и соответствия**](Chapter7/HistogramsAndMatching.md)
     * [Базовы тип Histogram](Chapter7/BasicHistogramDataStructure.md)
     * [Доступ к Histogram](Chapter7/AccessingHistograms.md)
     * [Базовые манипуляции над Histogram](Chapter7/BasicManipulationsWithHistograms.md)
     * [Более сложные манипуляции](Chapter7/SomeMoreComplicatedStuff.md)
     * [Упражнения](Chapter7/Exercises.md)
 
-* [**Контуры**](Chapter8/Contours.md)
+8. [**Контуры**](Chapter8/Contours.md)
     * [(!) Память хранения](Chapter8/MemoryStorage.md)
     * [(!) Последовательности](Chapter8/Sequences.md)
     * [Поиск контура](Chapter8/ContourFinding.md)
@@ -85,7 +88,7 @@
     * [(!) Совпадение контуров](Chapter8/MatchingContours.md)
     * [Упражнения](Chapter8/Exercises.md)
 
-* [**Составные части и сегментация изображения**](Chapter9/ImagePartsAndSegmentation.md)
+9. [**Составные части и сегментация изображения**](Chapter9/ImagePartsAndSegmentation.md)
     * [Составные части и сегментация](Chapter9/PartsAndSegments.md)
     * [Исключение фона](Chapter9/BackgroundSubtraction.md)
     * [Алгоритм Watershed](Chapter9/WatershedAlgorithm.md)
@@ -94,7 +97,7 @@
     * [Триангуляция Delaunay, тесселяция Voronoi](Chapter9/DelaunayTriangulationVoronoiTesselation.md)
     * [Упражнения](Chapter9/Exercises.md)
 
-* [**Слежение и движение**](Chapter10/TrackingAndMotion.md)
+10. [**Слежение и движение**](Chapter10/TrackingAndMotion.md)
     * [Основы слежения](Chapter10/TheBasicsOfTracking.md)
     * [(!) Угловой поиск](Chapter10/CornerFinding.md)
     * [(!) Сабпиксельные уголки](Chapter10/SubpixelCorners.md)
@@ -106,7 +109,7 @@
     * [(!) Алгоритм Condensation](Chapter10/TheCondensationAlgorithm.md)
     * [Упражнения](Chapter10/Exercises.md)
 
-* [**Модели камер и их калибровка**](Chapter11/CameraModelsAndCalibration.md)
+11. [**Модели камер и их калибровка**](Chapter11/CameraModelsAndCalibration.md)
     * [Модели камер](Chapter11/CameraModel.md)
     * [Калибровка](Chapter11/Calibration.md)
     * [(!) Искажения](Chapter11/Undistortion.md)
@@ -114,7 +117,7 @@
     * [(!) Преобразования Rodrigues](Chapter11/RodriguesTransform.md)
     * [Упражнения](Chapter11/Exercises.md)
 
-* [**Проекция и 3D Vision**](Chapter12/ProjectionAnd3DVision.md)
+12. [**Проекция и 3D Vision**](Chapter12/ProjectionAnd3DVision.md)
     * [Проекции](Chapter12/Projections.md)
     * [Аффинные и перспективные преобразования](Chapter12/AffineAndPerspectiveTransformations.md)
     * [POSIT: оценивание 3D позы](Chapter12/POSIT3DPoseEstimation.md)
@@ -123,7 +126,7 @@
     * [Установка линий в 2-ух и 3-х мерных измерениях](Chapter12/FittingLinesInTwoAndThreeDimensions.md)
     * [Упражнения](Chapter12/Exercises.md)
 
-* [**Машинное обучение**](Chapter13/MachineLearning.md)
+13. [**Машинное обучение**](Chapter13/MachineLearning.md)
     * [Что такое машинное обучение](Chapter13/WhatIsMachineLearning.md)
     * [Общие подпрограммы в ML Library](Chapter13/CommonRoutinesInTheMLLibrary.md)
     * [Расстояние Mahalanobis](Chapter13/MahalanobisDistance.md)
@@ -136,7 +139,7 @@
     * [Другие алгоритмы машинного обучения](Chapter13/OtherMachineLearningAlgorithms.md)
     * [Упражнения](Chapter13/Exercises.md)
 
-* [**Будущее OpenCV**](Chapter14/OpenCVsFuture.md)
+14. [**Будущее OpenCV**](Chapter14/OpenCVsFuture.md)
     * [Прошлое и будущее](Chapter14/PastAndFuture.md)
     * [направления](Chapter14/Directions.md)
     * [(!) OpenCV для разработчиков](Chapter14/OpenCVForArtists.md)
