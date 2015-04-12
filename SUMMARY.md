@@ -1,7 +1,7 @@
 # Содержание
 
 [Введение](README.md)
-1. [Обзор](Chapter1/Overview.md)
+1. [Обзор](Chapter1/WhatIsOpenCV.md)
     * [Что такое OpenCV?](Chapter1/WhatIsOpenCV.md)
     * [Кто использует OpenCV?](Chapter1/WhoUsesOpenCV.md)
     * [Что такое компьютерное зрение?](Chapter1/WhatIsComputerVision.md)
