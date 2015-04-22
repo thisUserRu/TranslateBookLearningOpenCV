@@ -1,4 +1,4 @@
-## Загрузка и установка OpenCV
+## [П]|(РС]|(РП) Загрузка и установка OpenCV
 
 Основным сайтом OpenCV является [SourceForge](http://SourceForge.net/projects/opencvlibrary) [http://SourceForge.net/projects/opencvlibrary] и [вики](http://opencvlibrary.SourceForge.net) страницы [http://opencvlibrary.SourceForge.net]. Для Linux - opencv-1.0.0.tar.gz; для Windows - OpenCV_1.0.exe. Самую актуальную версию всегда можно скачать с CVS сервера SourceForge.
 
