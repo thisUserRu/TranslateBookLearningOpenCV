@@ -4,10 +4,14 @@ OpenCV активно развивается и ошибки довольно т
 
 Данная книга не учит работе с CVS. Если вы уже работали над другими проектами с открытым исходным кодом, то вероятнее всего уже знакомы с CVS. Если же нет, то изучите труд Essential CVS от Jennifer Vesperman (O’Reilly). Командная строка CVS поставляется с Linux, OS X и в большинстве UNIX-подобных системах. Для пользователей Windows, рекомендуем использовать [TortoiseCVS](http://www.tortoisecvs.org/), который прекрасно встраивается в Windows Explorer.
 
-Для получения последней версии OpenCV из репозитория CVS, необходимо получить доступ к каталогу CVSROOT: 
+Для получения последней версии OpenCV из репозитория CVS, необходимо получить доступ к каталогу CVSROOT:
+
 	:pserver:anonymous@opencvlibrary.cvs.sourceforge.net:2401/cvsroot/opencvlibrary
 
 Для пользователей Linux необходимо ввести две команды:
+
 	cvs -d:pserver:anonymous@opencvlibrary.cvs.sourceforge.net:/cvsroot/opencvlibrarylogin
+	
 Когда программа запросит пароль, нажмите возврат. Затем используйте следующее:
+
 	cvs -z3 -d:pserver:anonymous@opencvlibrary.cvs.sourceforge.net:/cvsroot/opencvlibraryco -P opencv
