@@ -12,7 +12,7 @@
     * [Структура и содержание OpenCV](Chapter1/OpenCVStructureAndContent.md)
     * [Переносимость](Chapter1/Portability.md)
     * [Упражнения](Chapter1/Exercises.md)
-2. [Введение в OpenCV](Chapter2/IntroductionToOpenCV.md)
+2. [Введение в OpenCV](Chapter2/GettingStarted.md)
     * [Приступая к работе](Chapter2/GettingStarted.md)
     * [Первая программа - Отображение картинки](Chapter2/FirstProgramDisplayPicture.md)
     * [Вторая программа - AVI видео](Chapter2/SecondProgramAVIVideo.md)
