@@ -8,19 +8,19 @@
 
 int main( int argc, char** argv ) 
 {
-	cvNamedWindow( "PlayVideo", CV_WINDOW_AUTOSIZE );
-	CvCapture* capture = cvCreateFileCapture( argv[1] );
-	IplImage* frame;
+	cvNamedWindow( "PlayVideo", CV_WINDOW_AUTOSIZE );		// Создание окна
+	CvCapture* capture = cvCreateFileCapture( argv[1] );	// Открытие видеофайла для формирования структуры CvCapture
+	IplImage* frame;										// Кадр
 	while(1) 
 	{
-		frame = cvQueryFrame( capture );
-		if( !frame ) break;
-		cvShowImage( "PlayVideo", frame );
-		char c = cvWaitKey(33);
-		if( c == 27 ) break;
+		frame = cvQueryFrame( capture );	// Последовательное чтение кадров
+		if( !frame ) break;					// Конец файла, кадров больше нет
+		cvShowImage( "PlayVideo", frame );	// Отображение кадра
+		char c = cvWaitKey(33);				// Ожидание 33 мс
+		if( c == 27 ) break;				// Если Esc - выход из цикла
 	}
-	cvReleaseCapture( &capture );
-	cvDestroyWindow( "PlayVideo" );
+	cvReleaseCapture( &capture );	// Закрытие файла
+	cvDestroyWindow( "PlayVideo" );	// Уничтожение окна
 }
 ```
 
