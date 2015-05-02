@@ -16,7 +16,7 @@ int main( int argc, char** argv )
 		frame = cvQueryFrame( capture );	// Последовательное чтение кадров
 		if( !frame ) break;					// Конец файла, кадров больше нет
 		cvShowImage( "PlayVideo", frame );	// Отображение кадра
-		char c = cvWaitKey(33);				// Ожидание 33 мс
+		char c = cvWaitKey(33);				// Ожидание 33 мс, получение ASCII кода клавиши
 		if( c == 27 ) break;				// Если Esc - выход из цикла
 	}
 	cvReleaseCapture( &capture );	// Закрытие файла
