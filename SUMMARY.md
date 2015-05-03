@@ -20,7 +20,7 @@
     * [Простые преобразования](Chapter2/SimpleTransformation.md)
     * [Не столь простые преобразования](Chapter2/NotSoSimpleTransformation.md)
     * [Захват видео с камеры](Chapter2/InputFromCamera.md)
-    * [Запись в фомате AVI](Chapter2/WritingToAnAviFile.md)
+    * [Запись видео в фомате AVI](Chapter2/WritingToAnAviFile.md)
     * [Далее](Chapter2/Onward.md)
     * [Упражнения](Chapter2/Exercises.md)
 3. [Знакоство с OpenCV](Chapter3/GettingToKnowOpenCV.md)
