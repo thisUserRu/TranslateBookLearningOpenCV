@@ -17,7 +17,7 @@
     * [Первая программа - Отображение картинки](Chapter2/FirstProgramDisplayPicture.md)
     * [Вторая программа - AVI видео](Chapter2/SecondProgramAVIVideo.md)
     * [Создание ползунка](Chapter2/MovingAround.md)
-    * [Простые трансформации](Chapter2/SimpleTransformation.md)
+    * [Простые преобразования](Chapter2/SimpleTransformation.md)
     * [Не столь простые трансформации](Chapter2/NotSoSimpleTransformation.md)
     * [(!) Работа с камерой](Chapter2/InputFromCamera.md)
     * [Запись в фомате AVI](Chapter2/WritingToAnAviFile.md)
