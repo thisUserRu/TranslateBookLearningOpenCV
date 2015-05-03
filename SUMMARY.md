@@ -19,7 +19,7 @@
     * [Создание ползунка](Chapter2/MovingAround.md)
     * [Простые преобразования](Chapter2/SimpleTransformation.md)
     * [Не столь простые преобразования](Chapter2/NotSoSimpleTransformation.md)
-    * [(!) Работа с камерой](Chapter2/InputFromCamera.md)
+    * [Захват видео с камеры](Chapter2/InputFromCamera.md)
     * [Запись в фомате AVI](Chapter2/WritingToAnAviFile.md)
     * [Далее](Chapter2/Onward.md)
     * [Упражнения](Chapter2/Exercises.md)
