@@ -23,7 +23,7 @@
     * [Запись видео в фомате AVI](Chapter2/WritingToAnAviFile.md)
     * [Резюме](Chapter2/Onward.md)
     * [Упражнения](Chapter2/Exercises.md)
-3. [Знакоство с OpenCV](Chapter3/GettingToKnowOpenCV.md)
+3. [Знакоство с OpenCV](Chapter3/OpenCVPrimitiveDataTypes.md)
 	* [Примитивные типы данных в OpenCV](Chapter3/OpenCVPrimitiveDataTypes.md)
 	* [Структура CvMat](Chapter3/CvMatMatrixStructure.md)
 	* [Структура IplImage](Chapter3/IplImageDataStructure.md)
