@@ -1,6 +1,6 @@
-# Summary
+# Содержание
 
-* [introduction](README.md)
+* [Введение](README.md)
 * [Обзор](Chapter1/WhatIsOpenCV.md)
    * [Что такое OpenCV?](Chapter1/WhatIsOpenCV.md)
    * [Кто использует OpenCV?](Chapter1/WhoUsesOpenCV.md)
