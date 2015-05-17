@@ -387,27 +387,27 @@ int main(int argc, char** argv)
 
 | Флаг | Значение |
 | -- | -- |
-| CV_BGR2RGB | Convert between RGB and BGR color spaces (with or without alpha channel) |
+| CV_BGR2RGB | Преобразования между RGB и BGR (с и без альфа канала) |
 | CV_RGB2BGR | |
 | CV_RGBA2BGRA | |
 | CV_BGRA2RGBA | |
-| CV_RGB2RGBA | Add alpha channel to RGB or BGR image |
+| CV_RGB2RGBA | Добавление альфа канала к RGB или BGR изображению |
 | CV_BGR2BGRA | |
-| CV_RGBA2RGB | Remove alpha channel from RGB or BGR image |
+| CV_RGBA2RGB | Удаление альфа канала из RGB или BGR изображения |
 | CV_BGRA2BGR | |
-| CV_RGB2BGRA | Convert RGB to BGR color spaces while adding or removing alpha channel |
+| CV_RGB2BGRA | Преобразования RGB в BGR при добавлении или удалении альфа канала |
 | CV_RGBA2BGR | |
 | CV_BGRA2RGB | |
 | CV_BGR2RGBA | |
-| CV_RGB2GRAY | Convert RGB or BGR color spaces to grayscale |
+| CV_RGB2GRAY | Преобразование RGB или BGR в оттенки серого |
 | CV_BGR2GRAY | |
-| CV_GRAY2RGB | Convert grayscale to RGB or BGR color spaces (optionally removing alpha channel in the process) |
+| CV_GRAY2RGB | Преобразование из оттенков серого в RGB или BGR (необязательное удаление альфа канала в процессе преобразования) |
 | CV_GRAY2BGR | |
 | CV_RGBA2GRAY | |
 | CV_BGRA2GRAY | |
-| CV_GRAY2RGBA | Convert grayscale to RGB or BGR color spaces and add alpha channel |
+| CV_GRAY2RGBA | Преобразование из оттенков серого в RGB или BGR и добавление альфа канала |
 | CV_GRAY2BGRA | |
-| CV_RGB2BGR565 | Convert from RGB or BGR color space to BGR565 color representation with optional addition or removal of alpha channel (16-bit images) |
+| CV_RGB2BGR565 | Преобразование из RGB или BGR в BGR565 с добавлением или удалением альфа канала (16-битные изображения) |
 | CV_BGR2BGR565 | |
 | CV_BGR5652RGB | |
 | CV_BGR5652BGR | |
@@ -415,9 +415,9 @@ int main(int argc, char** argv)
 | CV_BGRA2BGR565 | |
 | CV_BGR5652RGBA | |
 | CV_BGR5652BGRA | |
-| CV_GRAY2BGR565 | Convert grayscale to BGR565 color representation or vice versa (16-bit images) |
+| CV_GRAY2BGR565 | Преобразование из оттенков серого в BGR565 и наоборот (16-битные изображения) |
 | CV_BGR5652GRAY | |
-| CV_RGB2BGR555 | Convert from RGB or BGR color space to BGR555 color representation with optional addition or removal of alpha channel (16-bit images) |
+| CV_RGB2BGR555 | Преобразование из RGB или BGR в BGR555 с необязательным добавлением или удалением альфа канала (16-битные изображения) |
 | CV_BGR2BGR555 | |
 | CV_BGR5552RGB | |
 | CV_BGR5552BGR | |
@@ -425,33 +425,33 @@ int main(int argc, char** argv)
 | CV_BGRA2BGR555 | |
 | CV_BGR5552RGBA | |
 | CV_BGR5552BGRA | |
-| CV_GRAY2BGR555 | Convert grayscale to BGR555 color representation or vice versa (16-bit images) |
+| CV_GRAY2BGR555 | Преобразование из оттенков серого в BGR555 и наоборот (16-битные изображения) |
 | CV_BGR5552GRAY | |
-| CV_RGB2XYZ | Convert RGB or BGR image to CIE XYZ representation or vice versa (Rec 709 with D65 white point) |
+| CV_RGB2XYZ | Преобразование RGB или BGR в CIE XYZ и наоборот (Rec 709 with D65 white point) |
 | CV_BGR2XYZ | |
 | CV_XYZ2RGB | |
 | CV_XYZ2BGR | |
-| CV_RGB2YCrCb | Convert RGB or BGR image to luma-chroma (aka YCC) color representation |
+| CV_RGB2YCrCb | Преобразование RGB или BGR в luma-chroma (также известный как YCC) |
 | CV_BGR2YCrCb | |
 | CV_YCrCb2RGB | |
 | CV_YCrCb2BGR | |
-| CV_RGB2HSV | Convert RGB or BGR image to HSV (hue saturation value) color representation or vice versa |
+| CV_RGB2HSV | Преобразование RGB или BGR в HSV (тон, насыщенность, значение) и наоборот |
 | CV_BGR2HSV | |
 | CV_HSV2RGB | |
 | CV_HSV2BGR | |
-| CV_RGB2HLS | Convert RGB or BGR image to HLS (hue lightness saturation) color representation or vice versa |
+| CV_RGB2HLS | Преобразование RGB или BGR в HLS (тон, светлота, насыщенность) и наоборот |
 | CV_BGR2HLS | |
 | CV_HLS2RGB | |
 | CV_HLS2BGR | |
-| CV_RGB2Lab | Convert RGB or BGR image to CIE Lab color representation or vice versa |
+| CV_RGB2Lab | Преобразование RGB или BGR в CIE Lab и наоборот |
 | CV_BGR2Lab | |
 | CV_Lab2RGB | |
 | CV_Lab2BGR | |
-| CV_RGB2Luv | Convert RGB or BGR image to CIE Luv color representation |
+| CV_RGB2Luv | Преобразование RGB или BGR в CIE Luv |
 | CV_BGR2Luv | |
 | CV_Luv2RGB | |
 | CV_Luv2BGR | |
-| CV_BayerBG2RGB | Convert from Bayer pattern (single-channel) to RGB or BGR image |
+| CV_BayerBG2RGB | Преобразование из Bayer pattern (один канал) в RGB или BGR |
 | CV_BayerGB2RGB | |
 | CV_BayerRG2RGB | |
 | CV_BayerGR2RGB | |
@@ -460,3 +460,102 @@ int main(int argc, char** argv)
 | CV_BayerRG2BGR | |
 | CV_BayerGR2BGR | |
 
+Реализация многих из этих преобразований нетривиальны. OpenCV содержит достаточный инструментарий для преобразования "в" и "из" этих различных цветовых пространств.
+
+При преобразованиях цветовое пространство (диапазон значений) изображений  должно соответствовать следующим правилам: для 8-битных изображений 0-255; для 16-битных изображений 0-65536; для вещественных чисел 0.0-1.0. Когда изображения в оттенках серого преобразуются в цветные изображения, все компоненты результирующего изображения (!) взяты равными (!); в обратной случае (из RGB или BGR в оттенки серого), значения результирующего изображения вычисляются по перцептивно взвешенной формуле:
+
+![Формула 3-6 не найдена](Images/Frml_3_6.jpg)
+
+В случае HSV и HLS, тон представляет диапазон [0, 360). Это может привести к проблемам с 8-битными изображениями, поэтому при преоброзовании к HSV, тон делится на 2, когда выходное изображение 8-битное.
+
+**cvDet**
+```cpp
+	double cvDet( const CvArr* mat );
+```
+
+Функция *cvDet()* вычисляет детерминант квадратной матрицы. Матрица может быть любого типа, но только одноканальной. Если матриц мала, то определитель вычисляется по стандартной формуле. Для больших матриц это не особо эффективно, поэтому используется метод Гаусса. 
+
+При этом стоит отметить, что если матрица симметрична и имеет положительный определитель, можно воспользоваться решением с помощью сингулярного разложения (SVD). Для получения более подробной информации обратитесь к функции "cvSVD()".
+
+**cvDiv**
+```cpp
+	void cvDiv(
+		const CvArr*	src1
+		const CvArr*	src2
+		CvArr*			dst
+		double			scale = 1
+	);
+```
+
+*cvDiv()* это функция деления; она просто поэлементно делит элементы *src1* на элементы *src2* и записывает результат в *dst*. (!) Если *mask != NULL*, то любые элементы в *dst*, соответствующие нулевому элементу маски, не подвергаются операции деления. Если потребуется инвертировть все элементы матрицы src2, то передайте src1, у которог все элементы NULL-ы; процедура расценит это как массив с элементами 1s. (!)
+
+**cvDotProduct**
+```cpp
+	double cvDotProduct(
+		 const CvArr* src1
+		,const CvArr* src2
+	);
+```
+
+Эта функция вычисляет вектор скалярного произведения двух N-мерных векторов. Не имеет значение, если это будут вектор-строка или вектор-столбец. *src1* и *src2* должны быть одноканальными и быть одного типа. 
+
+**cvEigenVV**
+```cpp
+	double cvEigenVV(
+		 CvArr*	mat
+		,CvArr*	evects
+		,CvArr*	evals
+		,double	eps = 0
+	);
+```
+
+Имея симметричную матрицу *mat*, функция *cvEigenVV()* вычисляет собственные вектора и соответствующие собственные числа матрицы. Для небольших матриц используется метод *Jacobi*. Этот метод запрашивает остановочный параметра, который является максимальным значением размера недиагональных элементов в результирующей матрице. Необязательный параметр *eps* устанавливает этот остановочный параметр. В процессе вычислений, значения матрицы *mat* будут изменены. По завершению выполнения функции, собственные вектора будут помещены в переменную *evects*; собственные числа в переменную *evals*. Порядок собственных векторов всегда будет в порядке убывания величин собственных чисел. На вход функции *cvEigenVV()* необходимо передавать сразу три массива.
+
+Также, как и в случае с функцией *cvDet()*, если известно, что матрица симметрична и имеет положительный определитель, то лучше использовать SVD для нахождения собственных векторов и собственных чисел.
+
+**cvFlip*
+```cpp
+	void cvFlip(
+		const CvArr*	src
+		CvArr*			dst	= NULL
+		int 			flip_mode = 0
+	);
+```
+
+Эта функция переворачивает изображение вокруг оси x, оси y или обоих. В частности, если аргумент *flip_mode* равен 0, то изображение будет перевернуто по оси x. Если *flip_mode* равен положительному числу (например, +1), изображение будет повернуто по оси y. Если *flip_mode* равен отрицательному числу (например, -1) изображение будет повернуто по обоим осям.
+
+При обработке видео в системах Win32, необходимо самостоятельно переключаться между форматами изображения, в зависимости от расположения начала координат (верхний левый или нижний левый угол).
+
+**cvGEMM**
+```cpp
+	double cvGEMM(
+		 const CvArr*	src1
+		,const CvArr*	src2
+		,double			alpha
+		,const CvArr*	src3
+		,double			beta
+		,CvArr*			dst
+		,int 			tABC = 0
+	);
+```
+
+Обобщенная матрица умножения (GEMM) в OpenCV представлена функцией *cvGEMM()*; она выполняет умножение матриц, транспонированное умножение, масштабированное умножение и т.д. В наиболее общей форме, *cvGEMM()* вычисляется по следующей формуле:
+
+![Формула 3-7 не найдена](Images/Frml_3_7.jpg)
+
+*A*, *B* и *C* матрицы *src1*, *src2* и *src3* соответственно, *α* и *β* числовые коэффициенты, *op()* необязятельное транспонирование матрицы. Аргумент *src3* может быть установлен в NULL. Транспонирование контролируется с помощью дополнительного аргумента *tABC*, который может быть равен 0 или любой комбинации (с помощью OR) из флагов *CV_GEMM_A_T*, *CV_GEMM_B_T* и *CV_GEMM_C_T* (каждый флаг указывает транспонирование соответствующей матрицы).
+
+Ранее OpenCV содержал функции *cvMatMul()* и *cvMatMulAdd()*, но это часто приводило к путанице с функцией *cvMul()*. В настоящее время эти функции существуют в виде макросов, которые неявно вызывают *cvGEMM()* (таблица 3-7).
+
+Таблица 3-7. Макросы для обобщенной функции *cvGEMM()*
+```cpp
+	cvMatMul( A, B, D ) 		cvGEMM( A, A, 1, NULL, 0, D, 0 )
+	cvMatMulAdd( A, B, C, D )	cvGEMM( A, A, 1, C, 1, D, 0 )
+```
+
+Все матрицы должны быть соответствующего размера и вещественного типа. Функция *cvGEMM()* поддерживает двухканальные матрицы.
+
+**cvGetCol и cvGetCols**
+```cpp
+
+```
