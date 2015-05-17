@@ -381,3 +381,88 @@ int main(int argc, char** argv)
 	);
 ```
 
+Ранее была представлена функция, которая преобразует из одного типа данных в другой, при этом количество каналов должно быть одинаково для исходных и результирующих изображений. Функция *cvCvtColor()* преобразует из одного цветового пространства в другое, при этом тип данных исходного и результирующего изображений совпадают. Флаг *code*, значения которого перечислены в таблице 3-6, задает процесс преобразования для конкретного случая.
+
+Таблица 3-6. Значения флага для функции cvCvtColor()
+
+| Флаг | Значение |
+| -- | -- |
+| CV_BGR2RGB
+CV_RGB2BGR
+CV_RGBA2BGRA
+CV_BGRA2RGBA | Convert between RGB and BGR color spaces (with or without alpha channel) |
+
+CV_RGB2RGBA
+CV_BGR2BGRA Add alpha channel to RGB or BGR image
+CV_RGBA2RGB
+CV_BGRA2BGR Remove alpha channel from RGB or BGR image
+CV_RGB2BGRA
+CV_RGBA2BGR
+CV_BGRA2RGB
+CV_BGR2RGBA Convert RGB to BGR color spaces while adding or removing alpha channel
+CV_RGB2GRAY
+CV_BGR2GRAY Convert RGB or BGR color spaces to grayscale
+CV_GRAY2RGB
+CV_GRAY2BGR
+CV_RGBA2GRAY
+CV_BGRA2GRAY Convert grayscale to RGB or BGR color spaces (optionally removing alpha channel
+in the process)
+CV_GRAY2RGBA
+CV_GRAY2BGRA Convert grayscale to RGB or BGR color spaces and add alpha channel
+CV_RGB2BGR565
+CV_BGR2BGR565
+CV_BGR5652RGB
+CV_BGR5652BGR
+CV_RGBA2BGR565
+CV_BGRA2BGR565
+CV_BGR5652RGBA
+CV_BGR5652BGRA Convert from RGB or BGR color space to BGR565 color representation with
+optional addition or removal of alpha channel (16-bit images)
+CV_GRAY2BGR565
+CV_BGR5652GRAY Convert grayscale to BGR565 color representation or vice versa (16-bit images)
+CV_RGB2BGR555
+CV_BGR2BGR555
+CV_BGR5552RGB
+CV_BGR5552BGR
+CV_RGBA2BGR555
+CV_BGRA2BGR555
+CV_BGR5552RGBA
+CV_BGR5552BGRA Convert from RGB or BGR color space to BGR555 color representation with
+optional addition or removal of alpha channel (16-bit images)
+CV_GRAY2BGR555
+CV_BGR5552GRAY Convert grayscale to BGR555 color representation or vice versa (16-bit images)
+CV_RGB2XYZ
+CV_BGR2XYZ
+CV_XYZ2RGB
+CV_XYZ2BGR Convert RGB or BGR image to CIE XYZ representation or vice versa (Rec 709 with
+D65 white point)
+CV_RGB2YCrCb
+CV_BGR2YCrCb
+CV_YCrCb2RGB
+CV_YCrCb2BGR Convert RGB or BGR image to luma-chroma (aka YCC) color representation
+CV_RGB2HSV
+CV_BGR2HSV
+CV_HSV2RGB
+CV_HSV2BGR Convert RGB or BGR image to HSV (hue saturation value) color representation or
+vice versa
+CV_RGB2HLS
+CV_BGR2HLS
+CV_HLS2RGB
+CV_HLS2BGR Convert RGB or BGR image to HLS (hue lightness saturation) color representation
+or vice versa
+CV_RGB2Lab
+CV_BGR2Lab
+CV_Lab2RGB
+CV_Lab2BGR Convert RGB or BGR image to CIE Lab color representation or vice versa
+CV_RGB2Luv
+CV_BGR2Luv
+CV_Luv2RGB
+CV_Luv2BGR Convert RGB or BGR image to CIE Luv color representation
+CV_BayerBG2RGB
+CV_BayerGB2RGB
+CV_BayerRG2RGB
+CV_BayerGR2RGB
+CV_BayerBG2BGR
+CV_BayerGB2BGR
+CV_BayerRG2BGR
+CV_BayerGR2BGR
