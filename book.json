@@ -1,9 +1,9 @@
 {
     "title": "Learning OpenCV",
     "description": "Перевод книги Learning OpenCV от AlexSys",
-    "language": "ru",
+    "author": "AlexSys"
     "structure": {
-        "readme": "SUMMARY.md",
-        "summary": "README.md"
+        "readme": "README.md",
+        "summary": "SUMMARY.md"
     }
 }
