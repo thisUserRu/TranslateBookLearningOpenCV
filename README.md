@@ -6,17 +6,17 @@
 
 * **Обзор**
     * [П]|[РС]|(РП)
-    * AlexSys7 
+    * AlexSys7, romixlab
     * AlexSys7 
     * -
 * **Введение в OpenCV** 
     * [П]|[РС]|(РП) 
-    * AlexSys7
+    * AlexSys7, romixlab
     * AlexSys7 
     * -
 * Знакомство с OpenCV 
     * (П]|(РС]|(РП) - Операции над матрицами и изображениями 
-    * AlexSys7 
+    * AlexSys7, romixlab
     * AlexSys7 
     * - 
 * HighGUI 
