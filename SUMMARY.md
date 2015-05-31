@@ -29,7 +29,7 @@
    * [Структура IplImage](Chapter3/IplImageDataStructure.md)
    * [Операции над матрицами и изображениями](Chapter3/MatrixAndImageOperators.md)
    * [Рисование](Chapter3/DrawingThings.md)
-   * [(!) Устойчивость данных](Chapter3/DataPersistence.md)
+   * [Сохранность данных](Chapter3/DataPersistence.md)
    * [(!) Интегрированные примитивы производительности](Chapter3/IntegratedPerformancePrimitives.md)
    * [Резюме](Chapter3/Summary.md)
    * [Упражнения](Chapter3/Exercises.md)
