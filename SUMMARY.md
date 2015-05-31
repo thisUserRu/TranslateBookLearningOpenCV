@@ -30,7 +30,7 @@
    * [Операции над матрицами и изображениями](Chapter3/MatrixAndImageOperators.md)
    * [Рисование](Chapter3/DrawingThings.md)
    * [Сохранность данных](Chapter3/DataPersistence.md)
-   * [(!) Интегрированные примитивы производительности](Chapter3/IntegratedPerformancePrimitives.md)
+   * [IPP - Integrated Performance Primitives](Chapter3/IntegratedPerformancePrimitives.md)
    * [Резюме](Chapter3/Summary.md)
    * [Упражнения](Chapter3/Exercises.md)
 * [HighGUI](Chapter4/HighGUI.md)
