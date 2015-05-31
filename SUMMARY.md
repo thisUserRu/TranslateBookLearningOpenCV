@@ -28,7 +28,7 @@
    * [Структура CvMat](Chapter3/CvMatMatrixStructure.md)
    * [Структура IplImage](Chapter3/IplImageDataStructure.md)
    * [Операции над матрицами и изображениями](Chapter3/MatrixAndImageOperators.md)
-   * [(!) Рисование вещей](Chapter3/DrawingThings.md)
+   * [Рисование](Chapter3/DrawingThings.md)
    * [(!) Устойчивость данных](Chapter3/DataPersistence.md)
    * [(!) Интегрированные примитивы производительности](Chapter3/IntegratedPerformancePrimitives.md)
    * [Резюме](Chapter3/Summary.md)
