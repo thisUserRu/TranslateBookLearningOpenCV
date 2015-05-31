@@ -191,12 +191,19 @@
 | -- | -- |
 | CV_FONT_HERSHEY_SIMPLEX | Нормальный размер без засечек |
 | CV_FONT_HERSHEY_PLAIN | Маленький размер без засечек |
-| CV_FONT_HERSHEY_DUPLEX | нормальный размер без засечек, сложнее, чем CV_FONT_HERSHEY_SIMPLEX |
+| CV_FONT_HERSHEY_DUPLEX | Нормальный размер без засечек; сложнее, чем CV_FONT_HERSHEY_SIMPLEX |
+| CV_FONT_HERSHEY_COMPLEX | Нормальный размер без засечек; сложнее, чем CV_FONT_HERSHEY_DUPLEX |
+| CV_FONT_HERSHEY_TRIPLEX | Нормальный размер без засечек; сложнее, чем CV_FONT_HERSHEY_COMPLEX |
+| CV_FONT_HERSHEY_COMPLEX_SMALL | Уменьшенная версия CV_FONT_HERSHEY_COMPLEX |
+| CV_FONT_HERSHEY_SCRIPT_SIMPLEX | Стиль подчерка |
+| CV_FONT_HERSHEY_SCRIPT_COMPLEX | Более сложный вариант CV_FONT_HERSHEY_SCRIPT_SIMPLEX |
 
+![Рисунок 3-6 не найден](Images/Pic_3_6.jpg)
 
-| CV_FONT_HERSHEY_COMPLEX | Normal size serif, more complex than CV_FONT_HERSHEY_DUPLEX
-| CV_FONT_HERSHEY_TRIPLEX | Normal size serif, more complex than CV_FONT_HERSHEY_COMPLEX
-| CV_FONT_HERSHEY_COMPLEX_SMALL
-Smaller version of CV_FONT_HERSHEY_COMPLEX
-| CV_FONT_HERSHEY_SCRIPT_SIMPLEX | Handwriting style
-| CV_FONT_HERSHEY_SCRIPT_COMPLEX | More complex variant of CV_FONT_HERSHEY_SCRIPT_SIMPLEX
+Рисунок 3-6. Восемь вариантов шрифта из таблицы 3-15 с hscale = vscale = 1.0 с междустрочным интервалом в 30 пикселей.
+
+*hscale* и *vscale* могут быть установлены только равными 1.0 или 0.5. Данные параметры задают масштабный коэффициент относительно основного определения конкретного шрифта.
+
+Параметр *shear* устанавливает курсивный шрифт; если установлен в 0.0, шрифт не наклонный. Если параметр равен 1.0, то наклон примерно 45 градусов.
+
+Параметры *thickness* и *line_type* задают толщину и тип сглаживания линии.
