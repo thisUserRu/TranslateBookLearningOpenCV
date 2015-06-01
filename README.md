@@ -21,8 +21,8 @@
     * - 
 * HighGUI 
     * (П]|(РС]|(РП) - Портативный Graphics Toolkit
-    * - 
-    * - 
+    * AlexSys7, romixlab 
+    * AlexSys7 
     * -
 * Обработка изображения 
     * (П)|(РС)|(РП) 
