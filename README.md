@@ -14,8 +14,8 @@
     * AlexSys7, romixlab
     * AlexSys7 
     * -
-* Знакомство с OpenCV 
-    * (П]|(РС]|(РП) - Рисование 
+* **Знакомство с OpenCV**
+    * [П]|[РС]|(РП) 
     * AlexSys7, romixlab
     * AlexSys7 
     * - 
