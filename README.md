@@ -20,7 +20,7 @@
     * AlexSys7 
     * - 
 * HighGUI 
-    * (П]|(РС]|(РП) - Портативный Graphics Toolkit
+    * (П]|(РС]|(РП) - Набор графических инструментов
     * AlexSys7, romixlab 
     * AlexSys7 
     * -
