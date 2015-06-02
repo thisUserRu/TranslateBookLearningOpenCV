@@ -33,7 +33,7 @@
    * [IPP - Integrated Performance Primitives](Chapter3/IntegratedPerformancePrimitives.md)
    * [Резюме](Chapter3/Summary.md)
    * [Упражнения](Chapter3/Exercises.md)
-* [HighGUI](Chapter4/HighGUI.md)
+* [HighGUI](Chapter4/PortableGraphicsToolkit.md)
    * [Набор графических инструментов](Chapter4/PortableGraphicsToolkit.md)
    * [Создание окна](Chapter4/CreatingWindow.md)
    * [Загрузка изображения](Chapter4/LoadingImage.md)
