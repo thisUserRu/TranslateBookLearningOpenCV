@@ -49,7 +49,7 @@ CxCore содержит целый раздел по сохранности да
 
 Пример 3-19. XML файл cfg.xml
 ```xml
-	<?xml version=“1.0”?>
+	<?xml version="1.0"?>
 	<opencv_storage>
 		<frame_count>10</frame_count>
 		<frame_size>320 200</frame_size>
