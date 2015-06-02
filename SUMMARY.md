@@ -41,7 +41,7 @@
    * [Работа с видео](Chapter4/WorkingWithVideo.md)
    * [Преобразование изображения](Chapter4/ConvertImage.md)
    * [Упражнения](Chapter4/Exercises.md)
-* [Обработка изображения](Chapter5/ImageProcessing.md)
+* [Обработка изображения](Chapter5/Overview.md)
    * [Обзор](Chapter5/Overview.md)
    * [Сглаживание](Chapter5/Smoothing.md)
    * [(!) Морфологический разбор изображения](Chapter5/ImageMorphology.md)
