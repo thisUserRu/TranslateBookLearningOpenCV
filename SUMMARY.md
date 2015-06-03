@@ -37,7 +37,7 @@
    * [Набор графических инструментов](Chapter4/PortableGraphicsToolkit.md)
    * [Создание окна](Chapter4/CreatingWindow.md)
    * [Загрузка изображения](Chapter4/LoadingImage.md)
-   * [Показ изображения](Chapter4/DisplayingImages.md)
+   * [Отображение изображения](Chapter4/DisplayingImages.md)
    * [Работа с видео](Chapter4/WorkingWithVideo.md)
    * [Преобразование изображения](Chapter4/ConvertImage.md)
    * [Упражнения](Chapter4/Exercises.md)
