@@ -39,7 +39,7 @@
    * [Загрузка изображения](Chapter4/LoadingImage.md)
    * [Отображение изображения](Chapter4/DisplayingImages.md)
    * [Работа с видео](Chapter4/WorkingWithVideo.md)
-   * [Преобразование изображения](Chapter4/ConvertImage.md)
+   * [Функция cvConvertImage()](Chapter4/ConvertImage.md)
    * [Упражнения](Chapter4/Exercises.md)
 * [Обработка изображения](Chapter5/Overview.md)
    * [Обзор](Chapter5/Overview.md)
