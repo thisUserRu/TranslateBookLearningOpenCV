@@ -44,7 +44,7 @@
 * [Обработка изображений](Chapter5/Overview.md)
    * [Краткий обзор](Chapter5/Overview.md)
    * [Сглаживание](Chapter5/Smoothing.md)
-   * [(!) Морфологический разбор изображения](Chapter5/ImageMorphology.md)
+   * [Морфологические преобразования](Chapter5/ImageMorphology.md)
    * [Заливка](Chapter5/FloodFill.md)
    * [Изменение размера](Chapter5/Resize.md)
    * [(!) Пирамиды изображения](Chapter5/ImagePyramids.md)
