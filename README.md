@@ -1,32 +1,35 @@
 # Перевод книги "Learning OpenCV" на русский язык (непрофессиональный)
 
+### Громадное спасибо Roman за его вариант перевода данной книги http://locv.ru/
+
+### От автора
 **Это первая книга, с которой мне (AlexSys) довелось поработать и испытать себя в качестве переводчика. Поэтому не стоит считать данный материал качественным.**
 
 ### График перевода глав
 
 * **Обзор**
     * [П]|[РС]|(РП)
-    * AlexSys, romixlab
+    * AlexSys, Roman
     * AlexSys 
     * -
 * **Введение в OpenCV** 
     * [П]|[РС]|(РП) 
-    * AlexSys, romixlab
+    * AlexSys, Roman
     * AlexSys 
     * -
 * **Знакомство с OpenCV**
     * [П]|[РС]|(РП) 
-    * AlexSys, romixlab
+    * AlexSys, Roman
     * AlexSys 
     * - 
 * **HighGUI** 
     * [П]|[РС]|(РП)
-    * AlexSys, romixlab 
+    * AlexSys, Roman 
     * AlexSys 
     * -
 * Обработка изображения 
     * (П]|(РС]|(РП) - Заливка
-    * AlexSys, romixlab
+    * AlexSys, Roman
     * AlexSys
     * -
 * Преобразования изображений 
