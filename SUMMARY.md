@@ -47,7 +47,7 @@
    * [Морфологические преобразования](Chapter5/ImageMorphology.md)
    * [Заливка](Chapter5/FloodFill.md)
    * [Изменение размера](Chapter5/Resize.md)
-   * [(!) Пирамиды изображения](Chapter5/ImagePyramids.md)
+   * [Пирамиды изображения](Chapter5/ImagePyramids.md)
    * [(!) Порог](Chapter5/Threshold.md)
    * [Упражнения](Chapter5/Exercises.md)
 * [Преобразования изображений](Chapter6/ImageTransforms.md)
