@@ -12,17 +12,17 @@
 	);
 ```
 
-Как показано в таблице 5-5 каждому типу порога соответствует своя операция сравнения между *i*-ным пикселем исходного изображения (![Формула 5-10 ненайден](Images/Frml_5_10.jpg)) и порогом (обозначен как *T*). В зависимости от соотношения между значением пикселя на исходном изображении и значением порога, значение пикселя на конечном изображении ![Формула 5-11 ненайден](Images/Frml_5_11.jpg) может быть установлено в 0, ![Формула 5-10 ненайден](Images/Frml_5_10.jpg) или *max_value* (обозначено как *M*). 
+Как показано в таблице 5-5 каждому типу порога соответствует своя операция сравнения между *i*-ным пикселем исходного изображения (![Формула 5-11 ненайден](Images/Frml_5_10.jpg)) и порогом (обозначен как *T*). В зависимости от соотношения между значением пикселя на исходном изображении и значением порога, значение пикселя на конечном изображении ![Формула 5-12 ненайден](Images/Frml_5_11.jpg) может быть установлено в 0, ![Формула 5-11 ненайден](Images/Frml_5_10.jpg) или *max_value* (обозначено как *M*). 
 
 Таблица 5-5. Значения threshold_type функции cvThreshold()
 
 | Тип порога | Операция |
 | -- | -- |
-| CV_THRESH_BINARY | ![Формула 5-11 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-10 ненайден](Images/Frml_5_10.jpg) > T ) ? M :0 |
-| CV_THRESH_BINARY_INV | ![Формула 5-11 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-10 ненайден](Images/Frml_5_10.jpg) > T ) ? 0: M |
-| CV_THRESH_TRUNC | ![Формула 5-11 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-10 ненайден](Images/Frml_5_10.jpg) > T ) ? M :![Формула 5-10 ненайден](Images/Frml_5_10.jpg) |
-| CV_THRESH_TOZERO_INV | ![Формула 5-11 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-10 ненайден](Images/Frml_5_10.jpg) > T ) ? 0:![Формула 5-10 ненайден](Images/Frml_5_10.jpg) |
-| CV_THRESH_TOZERO | ![Формула 5-11 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-10 ненайден](Images/Frml_5_10.jpg) > T ) ? ![Формула 5-10 ненайден](Images/Frml_5_10.jpg) :0 |
+| CV_THRESH_BINARY | ![Формула 5-12 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-11 ненайден](Images/Frml_5_10.jpg) > T ) ? M :0 |
+| CV_THRESH_BINARY_INV | ![Формула 5-12 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-11 ненайден](Images/Frml_5_10.jpg) > T ) ? 0: M |
+| CV_THRESH_TRUNC | ![Формула 5-12 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-11 ненайден](Images/Frml_5_10.jpg) > T ) ? M :![Формула 5-11 ненайден](Images/Frml_5_10.jpg) |
+| CV_THRESH_TOZERO_INV | ![Формула 5-12 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-11 ненайден](Images/Frml_5_10.jpg) > T ) ? 0:![Формула 5-11 ненайден](Images/Frml_5_10.jpg) |
+| CV_THRESH_TOZERO | ![Формула 5-12 ненайден](Images/Frml_5_11.jpg) = ( ![Формула 5-11 ненайден](Images/Frml_5_10.jpg) > T ) ? ![Формула 5-11 ненайден](Images/Frml_5_10.jpg) :0 |
 
 Формула 5-23 должен прояснить последствия каждого типа преобразования.
 
@@ -126,4 +126,70 @@ int main(int argc, char** argv)
 
 Адаптивный порог полезен в тех случаях, когда изображение содержит засветки или отражённые градиенты, а также, если нужно, чтобы порог работал по отношению к общей интенсивности, а не с каждым пикселем в отдельности. Функция работает только с одноканальными, 8-битными и вещественными изображениями и требует, чтобы исходное и конечное изображения были различными. 
 
-Исходный код для сравнения *cvAdaptiveThreshold()* и *cvThreshold()* приведён в примере 5-4. 
+Исходный код сравнения *cvAdaptiveThreshold()* и *cvThreshold()* приведён в примере 5-4. На рисунке 5-24 показан результат работы функции с изображением, которое имеет сильную градиентную засветку. В левой нижней части рисунка показан результат использования *cvThreshold()*, а в нижней правой части показан результат адаптивного порогового преобразования с использованием функции *cvAdapriveThreshold()*. Как видно из рисунка, с помощью адаптивного порогового преобразования получилось "увидеть" всё шахматное поле, чего, в свою очерердь, невозможно достичь при использовании обычного порогового преобразования. Примечание: в примере 5-4 для адаптивного преобразования были использованы следующие параметры: 
+
+	./adaptThresh 15 1 1 71 15 ../Data/cal3-L.bmp
+
+![Рисунок 5-24 не найден](Images/Pic_5_24.jpg)
+
+Рисунок 5-24. Обычное пороговое преобразование против адаптивного порогового преобразования: исходное изображение (сверху) было преобразовано в двоичное изображение с помощью глобального порога (внизу слева) и адаптивного порога (внизу справа); изображение предоставлено Kurt Konolidge
+
+Пример 5-4. Обычное пороговое преобразование против адаптивного пороговоого преобразования
+
+```cpp
+#include “cv.h”
+#include “highgui.h”
+#include “math.h”
+ 
+IplImage *Igray=0, *It = 0, *Iat;
+
+int main( int argc, char** argv ) {
+
+	if(argc != 7) {
+		return -1; 
+	}
+	 
+	// Обработка ключей командной строки
+	double threshold = (double)atof(argv[1]);
+	int threshold_type = atoi(argv[2]) ? CV_THRESH_BINARY 
+									   : CV_THRESH_BINARY_INV;
+	int adaptive_method = atoi(argv[3]) ? CV_ADAPTIVE_THRESH_MEAN_C 
+										: CV_ADAPTIVE_THRESH_GAUSSIAN_C;
+	int block_size = atoi(argv[4]);
+	double offset = (double)atof(argv[5]);
+	 
+	// Загрузка изображение в чёрно-белом формате
+	if((Igray = cvLoadImage( argv[6], CV_LOAD_IMAGE_GRAYSCALE)) == 0) {
+		return -1;
+	}
+	 
+	// Создание выходных чёрно-белых изображений
+	It = cvCreateImage(cvSize(Igray->width,Igray->height), IPL_DEPTH_8U, 1);
+	Iat = cvCreateImage(cvSize(Igray->width,Igray->height), IPL_DEPTH_8U, 1);
+	 
+	// Порог
+	cvThreshold( Igray, It,threshold, 255, threshold_type );
+	cvAdaptiveThreshold( Igray, Iat, 255, adaptive_method, threshold_type, block_size, offset );
+	 
+	// Создание окон для вывода результатов
+	cvNamedWindow("Raw", 1);
+	cvNamedWindow("Threshold", 1);
+	cvNamedWindow("Adaptive Threshold", 1);
+	 
+	// Вывод результатов
+	cvShowImage("Raw", Igray);
+	cvShowImage("Threshold", It);
+	cvShowImage("Adaptive Threshold", Iat);
+	cvWaitKey(0);
+	 
+	// Освобождение занимаемых ресурсов
+	cvReleaseImage( &Igray );
+	cvReleaseImage( &It );
+	cvReleaseImage( &Iat );
+	cvDestroyWindow( "Raw" );
+	cvDestroyWindow( "Threshold" );
+	cvDestroyWindow( "Adaptive Threshold" );
+	
+	return(0);
+}
+```
