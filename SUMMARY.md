@@ -53,7 +53,7 @@
 * [Преобразования изображений](Chapter6/Overview.md)
    * [Краткий обзор](Chapter6/Overview.md)
    * [Свертка](Chapter6/Convolution.md)
-   * [(!)Производные градиент и собел](Chapter6/GradientsAndSobelDerivatives.md)
+   * [Градиенты и оператор Собеля](Chapter6/GradientsAndSobelDerivatives.md)
    * [(!)Laplace](Chapter6/Laplace.md)
    * [(!)Canny](Chapter6/Canny.md)
    * [(!)Houch преобразования](Chapter6/HoughTransforms.md)
