@@ -54,7 +54,7 @@
    * [Краткий обзор](Chapter6/Overview.md)
    * [Свертка](Chapter6/Convolution.md)
    * [Градиенты и оператор Собеля](Chapter6/GradientsAndSobelDerivatives.md)
-   * [(!)Laplace](Chapter6/Laplace.md)
+   * [Лапласиан](Chapter6/Laplace.md)
    * [(!)Canny](Chapter6/Canny.md)
    * [(!)Houch преобразования](Chapter6/HoughTransforms.md)
    * [(!)Remap](Chapter6/Remap.md)
