@@ -57,7 +57,7 @@
    * [Лапласиан](Chapter6/Laplace.md)
    * [Canny](Chapter6/Canny.md)
    * [Преобразования Хафа](Chapter6/HoughTransforms.md)
-   * [(!)Remap](Chapter6/Remap.md)
+   * [Remap](Chapter6/Remap.md)
    * [(!)Stretch, Shrink, деформация и поворот](Chapter6/StretchShrinkWarpAndRotate.md)
    * [(!)CartToPolar](Chapter6/CartToPolarAndPolarToCart.md)
    * [(!)LogPolar](Chapter6/LogPolar.md)
