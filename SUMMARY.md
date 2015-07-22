@@ -58,7 +58,7 @@
    * [Canny](Chapter6/Canny.md)
    * [Преобразования Хафа](Chapter6/HoughTransforms.md)
    * [Remap](Chapter6/Remap.md)
-   * [(!)Stretch, Shrink, деформация и поворот](Chapter6/StretchShrinkWarpAndRotate.md)
+   * [Растягивание, сжатие, деформация и поворот](Chapter6/StretchShrinkWarpAndRotate.md)
    * [(!)CartToPolar](Chapter6/CartToPolarAndPolarToCart.md)
    * [(!)LogPolar](Chapter6/LogPolar.md)
    * [Дискретное преобразование Фурье](Chapter6/DiscreteFourierTransform_DFT.md)
