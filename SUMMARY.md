@@ -60,7 +60,7 @@
    * [Remap](Chapter6/Remap.md)
    * [Растягивание, сжатие, деформация и поворот](Chapter6/StretchShrinkWarpAndRotate.md)
    * [CartToPolar и PolarToCart](Chapter6/CartToPolarAndPolarToCart.md)
-   * [(!)LogPolar](Chapter6/LogPolar.md)
+   * [LogPolar](Chapter6/LogPolar.md)
    * [Дискретное преобразование Фурье](Chapter6/DiscreteFourierTransform_DFT.md)
    * [Дискретно косинусное преобразование](Chapter6/DiscreteCosineTransform_DCT.md)
    * [(!)Интегральные изображения](Chapter6/IntegralImages.md)
