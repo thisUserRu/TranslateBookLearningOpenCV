@@ -63,7 +63,7 @@
    * [LogPolar](Chapter6/LogPolar.md)
    * [Дискретное преобразование Фурье](Chapter6/DiscreteFourierTransform_DFT.md)
    * [Дискретно косинусное преобразование](Chapter6/DiscreteCosineTransform_DCT.md)
-   * [(!)Интегральные изображения](Chapter6/IntegralImages.md)
+   * [Интегральное изображение](Chapter6/IntegralImages.md)
    * [(!)Дистанционные преобразования](Chapter6/DistanceTransform.md)
    * [(!)Гистограмма выравнивания](Chapter6/HistogramEqualization.md)
    * [Упражнения](Chapter6/Exercises.md)
