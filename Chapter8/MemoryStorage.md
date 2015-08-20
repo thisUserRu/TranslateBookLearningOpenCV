@@ -5,19 +5,19 @@ OpenCV использует объект именуемый **memory storage** (
 *Memory storage* обрабатывается следующими четырьмя функциями:
 
 ```cpp
-CvMemStorage* cvCreateMemStorage(
- int block_size = 0
-);
-void cvReleaseMemStorage(
- CvMemStorage** storage
-);
-void cvClearMemStorage(
- CvMemStorage* storage
-);
-void* cvMemStorageAlloc(
- CvMemStorage* storage
-,size_t size
-);
+	CvMemStorage* cvCreateMemStorage(
+		 int block_size = 0
+	);
+	void cvReleaseMemStorage(
+	 	CvMemStorage** storage
+	);
+	void cvClearMemStorage(
+		 CvMemStorage* storage
+	);
+	void* cvMemStorageAlloc(
+		 CvMemStorage* storage
+		,size_t size
+	);
 ```
 
 Для создания *memory storage* используется функция *cvCreateMemStorage()*. В качестве исходных значений функции передается размер блока, который устанавливает размер блока памяти в хранилище. Если этот аргумент установлен в 0, тогда по умолчанию будет использован блок размера 64kB. Функция возвращает указатель нового хранилища памяти.
