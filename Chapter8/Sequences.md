@@ -318,29 +318,29 @@ OpenCV так же поддерживает метод разделения по
 При необходимости структура может быть обновлена без вызова *cvEndWriteSeq()* при помощи *cvFlushSeqWriter()*.
 
 ```cpp
-void cvStartWriteSeq(
- int 			seq_flags
-,int 			header_size
-,int 			elem_size
-,CvMemStorage* 	storage
-,CvSeqWriter* 		writer
-);
+	void cvStartWriteSeq(
+		 int 			seq_flags
+		,int 			header_size
+		,int 			elem_size
+		,CvMemStorage* 	storage
+		,CvSeqWriter* 	writer
+	);
 
-void cvStartAppendToSeq(
- CvSeq* 	seq
-,CvSeqWriter* 	writer
-);
+	void cvStartAppendToSeq(
+		 CvSeq* 		seq
+		,CvSeqWriter* 	writer
+	);
 
-CvSeq* cvEndWriteSeq(
- CvSeqWriter* 	writer
-);
+	CvSeq* cvEndWriteSeq(
+	 	CvSeqWriter* 	writer
+	);
 
-void cvFlushSeqWriter(
- CvSeqWriter* 	writer
-);
+	void cvFlushSeqWriter(
+	 	CvSeqWriter* 	writer
+	);
 
-CV_WRITE_SEQ_ELEM( elem, writer )
-CV_WRITE_SEQ_ELEM_VAR( elem_ptr, writer )
+	CV_WRITE_SEQ_ELEM( elem, writer )
+	CV_WRITE_SEQ_ELEM_VAR( elem_ptr, writer )
 ```
 
 Аргументы этих функций в значительной степени говорят сами за себя. Аргументы *cvStartWriteSeq()* *seq_flags*, *header_size* и *elem_size* идентичны соответствующим аргументам *cvCreateSeq()*. Функция *cvStartAppendToSeq()* инициализирует запись новых элементов в конец существующей последовательности *seq*. Макросу *CV_WRITE_SEQ_ELEM()* требуется элемент записи (например, *CvPoint*) и указатель на *CvSeqWriter*; новый элемент добавляется в последовательность и затем *elem* копируется в новый элемент. 
@@ -348,46 +348,46 @@ CV_WRITE_SEQ_ELEM_VAR( elem_ptr, writer )
 Как все это работает показано в простом примере, где создается *CvSeqWriter* и добавляются сто случайных точек прямоугольника 320×240 в новую последовательность
 
 ```cpp
-CvSeqWriter writer;
-cvStartWriteSeq( CV_32SC2, sizeof(CvSeq), sizeof(CvPoint), storage, &writer );
- 
-for(i = 0; i < 100; i++) {
-    CvPoint pt;
-    pt.x = rand()%320;
-    pt.y = rand()%240;
- 
-    CV_WRITE_SEQ_ELEM( pt, writer );
-}
+	CvSeqWriter writer;
+	cvStartWriteSeq( CV_32SC2, sizeof(CvSeq), sizeof(CvPoint), storage, &writer );
+	 
+	for(i = 0; i < 100; i++) {
+	    CvPoint pt;
+	    pt.x = rand()%320;
+	    pt.y = rand()%240;
+	 
+	    CV_WRITE_SEQ_ELEM( pt, writer );
+	}
 
-CvSeq* seq = cvEndWriteSeq( &writer );
+	CvSeq* seq = cvEndWriteSeq( &writer );
 ```
 
 Для чтения есть аналогичный набор функций и ещё несколько связанных макросов.
 
 ```cpp
-void cvStartReadSeq(
- const CvSeq* 	seq
-,CvSeqReader* 	reader
-,int 		reverse = 0
-);
- 
-int cvGetSeqReaderPos(
- CvSeqReader* 	reader
-);
- 
-void cvSetSeqReaderPos(
- CvSeqReader* 	reader
-,int 		index
-,int 		is_relative = 0
-);
- 
-CV_NEXT_SEQ_ELEM( elem_size, reader )
- 
-CV_PREV_SEQ_ELEM( elem_size, reader )
- 
-CV_READ_SEQ_ELEM( elem, reader )
- 
-CV_REV_READ_SEQ_ELEM( elem, reader )
+	void cvStartReadSeq(
+		 const CvSeq* 	seq
+		,CvSeqReader* 	reader
+		,int 			reverse = 0
+	);
+	 
+	int cvGetSeqReaderPos(
+	 	CvSeqReader* 	reader
+	);
+	 
+	void cvSetSeqReaderPos(
+		 CvSeqReader* 	reader
+		,int 			index
+		,int 			is_relative = 0
+	);
+	 
+	CV_NEXT_SEQ_ELEM( elem_size, reader )
+	 
+	CV_PREV_SEQ_ELEM( elem_size, reader )
+	 
+	CV_READ_SEQ_ELEM( elem, reader )
+	 
+	CV_REV_READ_SEQ_ELEM( elem, reader )
 ```
 
 Структура *CvSeqReader* аналогична *CvSeqWriter* и инициализируется при помощи *cvStartReadSeq()*. Аргумент *reverse* позволяет читать последовательность в нормальном (*reverse = 0*) и обратном порядке (*reverse = 1*). Функция *cvGetSeqReaderPos()* возвращает целое число, показывающее текущее положение *reader* в последовательности. И наконец, * cvSetSeqReaderPos()* позволяет задавать произвольное место *reader* в последовательности. Если аргумент *is_relative != NULL*, тогда индекс будет интерпретирован относительно текущей позиции в последовательности. В этом случае индекс может быть и положительным и отрицательным. 
@@ -399,21 +399,21 @@ CV_REV_READ_SEQ_ELEM( elem, reader )
 Зачастую возникает желание преобразовать последовательность (как правило, полную точек) в массив.
 
 ```cpp
-void* cvCvtSeqToArray(
- const CvSeq* 	seq
-,void* 		elements
-,CvSlice		slice = CV_WHOLE_SEQ
-);
+	void* cvCvtSeqToArray(
+		 const CvSeq* 	seq
+		,void* 			elements
+		,CvSlice		slice = CV_WHOLE_SEQ
+	);
  
-CvSeq* cvMakeSeqHeaderForArray(
- int 		seq_type
-,int 		header_size
-,int 		elem_size
-,void* 		elements
-,int 		total
-,CvSeq* 	seq
-,CvSeqBlock* 	block
-);
+	CvSeq* cvMakeSeqHeaderForArray(
+		 int 			seq_type
+		,int 			header_size
+		,int 			elem_size
+		,void* 			elements
+		,int 			total
+		,CvSeq* 		seq
+		,CvSeqBlock* 	block
+	);
 ```
 
 Функция * cvCvtSeqToArray()* копирует содержимое последовательности в непрерывный массив памяти. Это означает, что если имеется последовательность из 20 элементов типа *CvPoint*, то функции потребуется указатель на массив *elements* достаточный для хранения 40 целых чисел. Третий (необязательный) аргумент *slice* может быть объектом типа *CvSlice* или макросом *CV_WHOLE_SEQ* (значение по умолчанию). Если выбран макрос *CV_WHOLE_SEQ*, то копируется вся последовательность.
