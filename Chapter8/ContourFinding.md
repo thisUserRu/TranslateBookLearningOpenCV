@@ -89,48 +89,47 @@
 Эти последовательности являются последовательностями точек; точнее контурами. Главное, что нужно помнить о контурах – это частный случай последовательности. (Тип *CvContour* не совпадает с *CvSeq*. По сути *CvContour* унаследован от *CvSeq* и имеет несколько дополнительных членов, а именно цвет *color* и ограничительную рамку типа *CvRect*). Контур – это последовательность точек, представляющая некую кривую в пространстве. Такие цепочки точек встречаются довольно таки часто, так что существуют специальные функции, помогающие манипулировать ими. 
 
 ```cpp
-int cvFindContours(
- CvArr* image
-,CvMemStorage* storage
-,CvSeq** first_contour
-,int header_size = sizeof(CvContour)
-,int mode = CV_RETR_LIST
-,int method = CV_CHAIN_APPROX_SIMPLE
-,CvPoint offset = cvPoint(0,0)
-);
+	int cvFindContours(
+		 CvArr* 		image
+		,CvMemStorage* 	storage
+		,CvSeq** 		first_contour
+		,int 			header_size = sizeof(CvContour)
+		,int 			mode = CV_RETR_LIST
+		,int 			method = CV_CHAIN_APPROX_SIMPLE
+		,CvPoint 		offset = cvPoint(0,0)
+	);
 
-CvContourScanner cvStartFindContours(
- CvArr* image
-,CvMemStorage* storage
-,int header_size = sizeof(CvContour)
-,int mode = CV_RETR_LIST
-,int method = CV_CHAIN_APPROX_SIMPLE
-,CvPoint offset = cvPoint(0,0)
-);
+	CvContourScanner cvStartFindContours(
+		 CvArr* 		image
+		,CvMemStorage* 	storage
+		,int 			header_size = sizeof(CvContour)
+		,int 			mode = CV_RETR_LIST
+		,int 			method = CV_CHAIN_APPROX_SIMPLE
+		,CvPoint 		offset = cvPoint(0,0)
+	);
 
-CvSeq* cvFindNextContour(
- CvContourScanner scanner
-);
- 
-void cvSubstituteContour(
- CvContourScanner scanner,
-,CvSeq* new_contour
-);
- 
-CvSeq* cvEndFindContour(
- CvContourScanner* scanner
-);
- 
-CvSeq* cvApproxChains(
- CvSeq* src_seq
-,CvMemStorage* storage
-,int method = CV_CHAIN_APPROX_SIMPLE
-,double parameter = 0
-,int minimal_perimeter = 0
-,int recursive = 0
-);
+	CvSeq* cvFindNextContour(
+	 	CvContourScanner 	scanner
+	);
+	 
+	void cvSubstituteContour(
+		 CvContourScanner 	scanner
+		,CvSeq* 			new_contour
+	);
+	 
+	CvSeq* cvEndFindContour(
+	 	CvContourScanner* 	scanner
+	);
+	 
+	CvSeq* cvApproxChains(
+		 CvSeq* 			src_seq
+		,CvMemStorage* 		storage
+		,int 				method = CV_CHAIN_APPROX_SIMPLE
+		,double 			parameter = 0
+		,int 				minimal_perimeter = 0
+		,int 				recursive = 0
+	);
 ```
 
-Первую функцию *cvFindContours()* уже доводилось видеть ранее. Вторая функция *cvStartFindContours()* тесно связана с *cvFindContours()* и используется, если необходимо обрабатывать контуры по одному, в то время как они упакованы в более высокоуровневую структуру. 
+Первую функцию *cvFindContours()* уже доводилось видеть ранее. Вторая функция *cvStartFindContours()* тесно связана с *cvFindContours()* и используется, если необходимо обрабатывать контуры по одному, в то время как они упакованы в более высокоуровневую структуру. Функция *cvStartFindContours()* возвращает *cvSequenceScanner*. Сканер содержит информацию о том, что может быть прочитано, а что нет. (Важно не путать *CvSequenceScanner* с *CvSeqReader*. Последний используется для чтения элементов последовательности, в то время, как *CvSequenceScanner* используется для чтения того, что по сути является списком последовательностей). В последующем можно вызвать *cvFindNextContour()* и последовательно получить все найденные контуры. Если вернется NULL, то это будет означать, что контуров больше не осталось.
 
-	
