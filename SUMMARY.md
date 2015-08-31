@@ -79,7 +79,7 @@
    * [Поиск контура](Chapter8/ContourFinding.md)
    * [Примеры поиска контура](Chapter8/AnotherContourExample.md)
    * [Другие манипуляции с контурами](Chapter8/MoreToDoWithContours.md)
-   * [(!) Совпадение контуров](Chapter8/MatchingContours.md)
+   * [Сопоставление контуров](Chapter8/MatchingContours.md)
    * [Упражнения](Chapter8/Exercises.md)
 * [Составные части и сегментация изображения](Chapter9/ImagePartsAndSegmentation.md)
    * [Составные части и сегментация](Chapter9/PartsAndSegments.md)
