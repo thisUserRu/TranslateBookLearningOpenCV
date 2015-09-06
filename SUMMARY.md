@@ -81,7 +81,7 @@
    * [Другие манипуляции с контурами](Chapter8/MoreToDoWithContours.md)
    * [Сопоставление контуров](Chapter8/MatchingContours.md)
    * [Упражнения](Chapter8/Exercises.md)
-* [Составные части и сегментация изображения](Chapter9/PartsAndSegmentation.md)
+* [Составные части и сегментация изображения](Chapter9/PartsAndSegments.md)
    * [Составные части и сегментация](Chapter9/PartsAndSegments.md)
    * [Исключение фона](Chapter9/BackgroundSubtraction.md)
    * [Алгоритм Watershed](Chapter9/WatershedAlgorithm.md)
