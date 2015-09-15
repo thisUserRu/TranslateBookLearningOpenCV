@@ -314,23 +314,23 @@ void backgroundDiff( IplImage *I, IplImage *Imask )
 ```cpp
 void DeallocateImages()
 {
-cvReleaseImage( &IavgF);
-cvReleaseImage( &IdiffF );
-cvReleaseImage( &IprevF );
-cvReleaseImage( &IhiF );
-cvReleaseImage( &IlowF );
-cvReleaseImage( &Ilow1 );
-cvReleaseImage( &Ilow2 );
-cvReleaseImage( &Ilow3 );
-cvReleaseImage( &Ihi1 );
-cvReleaseImage( &Ihi2 );
-cvReleaseImage( &Ihi3 );
-cvReleaseImage( &Iscratch );
-cvReleaseImage( &Iscratch2 );
-cvReleaseImage( &Igray1 );
-cvReleaseImage( &Igray2 );
-cvReleaseImage( &Igray3 );
-cvReleaseImage( &Imaskt);
+	cvReleaseImage( &IavgF);
+	cvReleaseImage( &IdiffF );
+	cvReleaseImage( &IprevF );
+	cvReleaseImage( &IhiF );
+	cvReleaseImage( &IlowF );
+	cvReleaseImage( &Ilow1 );
+	cvReleaseImage( &Ilow2 );
+	cvReleaseImage( &Ilow3 );
+	cvReleaseImage( &Ihi1 );
+	cvReleaseImage( &Ihi2 );
+	cvReleaseImage( &Ihi3 );
+	cvReleaseImage( &Iscratch );
+	cvReleaseImage( &Iscratch2 );
+	cvReleaseImage( &Igray1 );
+	cvReleaseImage( &Igray2 );
+	cvReleaseImage( &Igray3 );
+	cvReleaseImage( &Imaskt);
 }
 ```
 
@@ -346,9 +346,9 @@ cvReleaseImage( &Imaskt);
 
 ```cpp
 void cvAcc(
-const Cvrr* image,
-CvArr* sum,
-const CvArr* mask = NULL
+	 const Cvrr* 	image
+	,CvArr* 		sum
+	,const CvArr* 	mask = NULL
 );
 ```
 
@@ -356,10 +356,10 @@ const CvArr* mask = NULL
 
 ```cpp
 void cvRunningAvg(
-const CvArr* image,
-CvArr* acc,
-double alpha,
-const CvArr* mask = NULL
+	 const CvArr* 	image
+	,CvArr* 		acc
+	,double 		alpha
+	,const CvArr* 	mask = NULL
 );
 ```
 
@@ -373,9 +373,9 @@ const CvArr* mask = NULL
 
 ```cpp
 void cvSquareAcc(
-const CvArr* image,
-CvArr* sqsum,
-const CvArr* mask = NULL
+	 const CvArr* 	image
+	,CvArr* 		sqsum
+	,const CvArr* 	mask = NULL
 );
 ```
 
@@ -393,10 +393,10 @@ const CvArr* mask = NULL
 
 ```cpp
 void cvMultiplyAcc(
-const CvArr* image1,
-const CvArr* image2,
-CvArr* acc,
-const CvArr* mask = NULL
+	 const CvArr* 	image1
+	,const CvArr* 	image2
+	,CvArr* 		acc
+	,const CvArr* 	mask = NULL
 );
 ```
 
@@ -431,4 +431,36 @@ const CvArr* mask = NULL
 ![Рисунок 9-4 не найден](Images/Pic_9_4.jpg)
 
 Рисунок 9-4. Часть колебаний яркости изученных записей кодовой книги для шести выбранных пикселей (показаны вертикальными *box*): *boxes* кодовой книги собирают пикселы, которые принимают одно из дискретных значений, в результате чего лучше моделируется модель дискретных распределений; это позволяет обнаружить руку, как объект переднего плана (показано на рисунке точечной линией), среднее значение которого лежит между значениями пикселей принадлежащих фону. В данном случае кодовая книга имеет только одно измерение и может представлять только колебания яркости
+
+В методе кодовой книги для изучения модели фона каждый *box* определяется двумя порогами (*max* и *min*) для каждой цветовой оси. Эти пороги границ *box* расширяются (*max* становится больше, *min* становится меньше), если новые фоновые образцы попадут внутрь изученных границ (*learnHigh* и *learnLow*) выше *max* или ниже *min* соответственно. Если новый фоновый образец попадает вне границ *box* и его изученных порогов, тогда будет создан новый *box*. В режиме *вычитания фона* используются пороги *maxMod* и *minMod*, которые свидетельствуют о том, что если пиксель "достаточно близок" к *min* и *max* границе *box*, тогда можно считать, что он внутри *box*. Второй порог выполнения позволяет регулировать модели под конкретные условия.
+
+**Структуры**
+
+Теперь настало время для более детального разбора алгоритма кодвой книги. Для начала необходимо создать структуру кодовой книги, которая будет просто указывать на группу *boxes* пространства YUV:
+
+```cpp
+typedef struct code_book {
+	code_element 	**cb;
+	int 			numEntries;
+	int 			t; 			// количество обращений
+} codeBook;
+```
+
+*numEntries* - количество записей в кодовой книге. Переменная *t* подсчитывает число точек, накопленных от начала или с последеней операции очищения. Описание структуры элемента представлено ниже:
+
+```cpp
+#define CHANNELS 3
+typedef struct ce {
+	uchar learnHigh[CHANNELS]; 	// Верхний порог обучения
+	uchar learnLow[CHANNELS]; 	// Нижний порог обучения
+	uchar max[CHANNELS]; 		// Верхняя граница box
+	uchar min[CHANNELS]; 		// Нижняя граница box
+	int t_last_update; 			// Позволяет убирать устаревшие записи
+	int stale; 					// max negative run (продолжительный период неактивности)
+} code_element;
+```
+
+Каждая запись кодовой книги расходует 4 байта на канал плюс 2 или *CHANNELSx4+4+4* байт (20 байт при использовании трех каналов). Можно установить *CHANNELS* в любое положительное целое значение меньше или равное числу каналов цветного изображения, но, как правило, используется 1 ("Y" или только яркость) или 3 (YUV, HSV). В этой структуре для каждого канала *max* и *min* - это границы кодовой книги. Параметры *learnHigh* и *learnLow* - это пороговые значения, управляющие созданием новых записей. Более конкретно: новая запись будет создана, если попадется новый пиксель не лежащий в диапазоне *min - learnLow* и *max + learnHigh* в каждом из каналов. Время последнего обновления *t_last_update* и *stale* используются для удаления редко используемых записей кодовой книги во время обучения. Теперь можно переходить к изучению функций, которые испоьзуют эту структуру для изучения динамически меняющегося фона.
+
+**Изучение фона**
 
