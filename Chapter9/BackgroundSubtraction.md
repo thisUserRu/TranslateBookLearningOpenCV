@@ -471,32 +471,30 @@ typedef struct ce {
 // int update_codebook(uchar *p, codeBook &c, unsigned cbBounds)
 // Обновление записей codebook за счет указателя на новые данные
 //
-// p Указатель на пиксель YUV
-// c Codebook для этого пикселя
-// cbBounds Изучаемые границы codebook (Rule of thumb: 10)
-// numChannels Число каналов
+// p 			Указатель на пиксель YUV
+// c 			Codebook для этого пикселя
+// cbBounds 	Изучаемые границы codebook (Rule of thumb: 10)
+// numChannels 	Число каналов
 //
 // NOTES:
-// cvBounds может иметь длину равную numChannels
+// 	cvBounds должна иметь длину равную numChannels
 //
 // RETURN
-// codebook index
+// 	codebook index
 //
 int update_codebook(
-	uchar* p,
-	codeBook& c,
-	unsigned* cbBounds,
-	int numChannels) {
- 
+	uchar* 		p,
+	codeBook& 	c,
+	unsigned* 	cbBounds,
+	int 		numChannels
+) {
 	unsigned int high[3], low[3];
 	for(n = 0; n < numChannels; n++) {
 		high[n] = *(p+n) + *(cbBounds+n);
-		if(high[n] > 255) high[n] = 255;
- 
+		if(high[n] > 255) high[n] = 255; 
 		low[n] = *(p+n) - *(cbBounds+n);
 		if(low[n] < 0) low[n] = 0;
-	}
- 
+	} 
 	int matchChannel;
 
 	// Проверка соответствия существующему кодовому слову
@@ -504,16 +502,21 @@ int update_codebook(
 	for(int i = 0; i < c.numEntries; i++) {
 		matchChannel = 0;
 		for(n = 0; n < numChannels; n++) {
-			if((c.cb[i]->learnLow[n] <= *(p+n)) &&
-			//Found an entry for this channel
-				(*(p+n) <= c.cb[i]->learnHigh[n])) {
-					matchChannel++;
+			// Found an entry for this channel
+			if(   (c.cb[i]->learnLow[n] <= *(p+n)) 
+			   && (*(p+n) <= c.cb[i]->learnHigh[n])
+			  ){
+				matchChannel++;
 			}
 		}
  
-		if(matchChannel == numChannels) { // Если запись найдена
+ 		// Если запись найдена
+ 		// 
+		if(matchChannel == numChannels) {
 			c.cb[i]->t_last_update = c.t;
+
 			// Настройка этого кодового слова для первого канала
+			// 
 			for(n = 0; n < numChannels; n++) {
 				if(c.cb[i]->max[n] < *(p+n)) {
 					c.cb[i]->max[n] = *(p+n);
@@ -533,10 +536,11 @@ int update_codebook(
 ```cpp
 // ... продолжение
 	
-// Накладные расходы для отслеживания потенциально устаревших записей
+	// Накладные расходы для отслеживания потенциально устаревших записей
 	//
 	for(int s = 0; s < c.numEntries; s++) {
-		// Отслеживание устаревших записей:
+
+		// Отслеживание устаревших записей
 		//
 		int negRun = c.t - c.cb[s]->t_last_update;
 		if(c.cb[s]->stale < negRun) c.cb[s]->stale = negRun;
@@ -549,9 +553,12 @@ int update_codebook(
 
 ```cpp
 // ... продолжение
+
 	// Ввод нового кодового слова по необходимости
 	//
-	if(i == c.numEntries) { // если ни одно из существующих кодовых слов не найдено
+
+	// если ни одно из существующих кодовых слов не найдено
+	if(i == c.numEntries) { 
 		code_element **foo = new code_element* [c.numEntries+1];
 		for(int ii = 0; ii < c.numEntries; ii++) {
 			foo[ii] = c.cb[ii];
@@ -571,6 +578,7 @@ int update_codebook(
 		c.cb[c.numEntries]->stale = 0;
 		c.numEntries += 1;
 	}
+
 // ... продолжение следует
 ```
 
@@ -601,46 +609,51 @@ int update_codebook(
 //int clear_stale_entries(codeBook &c)
 // Во время обучения, по истечению некоторого времени, периодически
 // происходит очищение устаревших записей кодовой книги
-// c Codebook для очистки
+//
+// c 	Codebook для очистки
+//
 // Return
-// количество очищенных записей
+// 	количество удаленных записей
 // 
-int clear_stale_entries(codeBook &c){
-        int staleThresh = c.t>>1;
-        int *keep = new int [c.numEntries];
-        int keepCnt = 0;
+int clear_stale_entries(codeBook &c) {
+	int staleThresh = c.t>>1;
+	int *keep = new int [c.numEntries];
+	int keepCnt = 0;
 
-        // Просмотр устаревших записей кодовой книги
-        //
-        for(int i=0; i<c.numEntries; i++){
-                if(c.cb[i]->stale > staleThresh)
-                        keep[i] = 0; // Отметка удаления
-                else {
-                        keep[i] = 1; // Отметка сохранения keepCnt += 1;
-                }
-        }
+	// Просмотр устаревших записей кодовой книги
+	//
+	for(int i=0; i<c.numEntries; i++){
+		if(c.cb[i]->stale > staleThresh)
+			keep[i] = 0; // Отметка удаления
+		else {
+			keep[i] = 1; // Отметка сохранения keepCnt += 1;
+		}
+	}
 
-        // Сохранить только хорошие
-        //
-        c.t = 0; // Сброс прошлых слежений
-        code_element **foo = new code_element* [keepCnt]; int k=0;
-        for(int ii=0; ii<c.numEntries; ii++){
-                if(keep[ii]) {
-                        foo[k] = c.cb[ii];
-                        // Необходимо обновить записи до следующего clearStale 
-         foo[k]->t_last_update = 0;
-                        k++;
-                }
-        }
+	// Сохранение только хороших
+	//
+	c.t = 0; // Сброс прошлых слежений
+	code_element **foo = new code_element* [keepCnt]; int k=0;
+	for(int ii=0; ii<c.numEntries; ii++){
+		if(keep[ii]) {
+			foo[k] = c.cb[ii];
 
-        // Очистка
-        //
-        delete [] keep; 
-delete [] c.cb;
-c.cb = foo;
-        int numCleared = c.numEntries - keepCnt; 
-c.numEntries = keepCnt; 
-return(numCleared);
+			// Необходимо обновить записи до следующего clearStale 
+			// 
+			foo[k]->t_last_update = 0;
+			k++;
+		}
+	}
+
+	// Очистка
+	//
+	delete [] keep; 
+	delete [] c.cb;
+	c.cb = foo;
+	int numCleared = c.numEntries - keepCnt; 
+	c.numEntries = keepCnt; 
+
+	return(numCleared);
 }
 ```
 
@@ -654,49 +667,56 @@ return(numCleared);
 ////////////////////////////////////////////////////////////
 // uchar background_diff( uchar *p, codeBook &c,
 // int minMod, int maxMod)
-// Определяет, является ли пиксель часть кодовой книги 
+// Данная функиця определяет, является ли пиксель частью кодовой книги 
 //
-// p Указатель на пиксель (YUV interleaved)
-// c Ссылка на codebook
-// numChannels Число каналов
-// maxMod Добавление (возможно отрицательного) числа к уровню 
-// 	max при определении, что новый пиксель является частью объекта переднего плана 
-// minMod Вычитание (возможно отрицательного) числа из уровня 
-// 	min при определении, что новый пиксель является частью объекта переднего плана 
+// p 			Указатель на пиксель (YUV interleaved)
+// c 			Ссылка на codebook
+// numChannels 	Число каналов
+// maxMod 		Добавление (возможно отрицательного) числа к уровню 
+// 				max при определении, что новый пиксель является частью объекта
+// 				переднего плана 
+// minMod 		Вычитание (возможно отрицательного) числа из уровня 
+// 				min при определении, что новый пиксель является частью объекта 
+// 				переднего плана 
 // NOTES:
-// длина minMod и maxMod должна быть numChannels,
-// т.е. 3 канала => minMod[3], maxMod[3]. При этом по одному min и 
+// 	длина minMod и maxMod должна быть numChannels,
+// 	т.е. 3 канала => minMod[3], maxMod[3]. При этом по одному min и 
 // 	одному max порогу на канал.
 //
 // Return
-// 0 => фон, 255 => объект переднего плана
+// 	0 => фон, 255 => объект переднего плана
 //
 uchar background_diff(
-        uchar* p,
-        codeBook& c,
-        int numChannels, int* minMod,
-        int* maxMod
+	uchar* 		p,
+	codeBook& 	c,
+	int 		numChannels,
+	int* 		minMod,
+	int* 		maxMod
 ){
-        int matchChannel;
 
-        // Проверка принадлежности к существующему кодовому слову
-//
-        for(int i=0; i<c.numEntries; i++) {
-                matchChannel = 0;
-                for(int n=0; n<numChannels; n++) {
-                        if((c.cb[i]->min[n] - minMod[n] <= *(p+n)) &&
-                            (*(p+n) <= c.cb[i]->max[n] + maxMod[n])) {
-                            matchChannel++; // Количество найденных записей для данного канала
-                        } else {
-                             break;
-                        }
-                }
-                if(matchChannel == numChannels) {
-                        break; // Найдена запись, соответствующая всем каналам
-                }
-        }
-        if(i >= c.numEntries) return(255);
-        return(0);
+	int matchChannel;
+
+	// Проверка принадлежности к существующему кодовому слову
+	//
+	for(int i=0; i<c.numEntries; i++) {
+		matchChannel = 0;
+		for(int n=0; n<numChannels; n++) {
+			if((c.cb[i]->min[n] - minMod[n] <= *(p+n)) &&
+			(*(p+n) <= c.cb[i]->max[n] + maxMod[n])) {
+				matchChannel++; // Количество найденных записей для данного канала
+			} else {
+				break;
+			}
+		}
+		if(matchChannel == numChannels) {
+			break; // Найдена запись, соответствующая всем каналам
+		}
+	}
+
+	if(i >= c.numEntries) 
+		return(255);
+
+	return(0);
 }
 ```
 
@@ -722,4 +742,153 @@ uchar background_diff(
 
 ### Связанные компоненты для очистки объектов переднего плана
 
+Прежде, чем перейти к сравнению метода усреднения и метода кодовой книги, необходимо рассмотреть пути очистки изображения, используя связанные компоненты. Данная форма анализа основывается на исходном шумовом изображение маски; при этом используется морфологическая операция *открытия* для сокращения небольших шумовых областьей с последующим применением операции *закрытия* для восстановления областей, которые были удалены операцией открытия. После этого появляется возможность найти "достаточно большие" контуры сохранившихся сегментов и (необязательно) собрать статистику по всем таким сегментам. При этом появляется возможность в получении самого большого контура или всех контуров выше определенного порога. Далее будет представлено большинство функций, которые могут потребоваться при работе со связными компонентами:
+
+* Аппроксимация уцелевших компонентов контура к полигонам или выпуклым оболочкам
+* Установка, насколько большим должен быть контур, чтобы не быть удаленным
+* Установка максимального числа возвращаемых контуров
+* (Необязательно) Возвращение *bounding boxes* сохранившися контуров
+* (Необязательно) Возвращение центров сохранившихся контуров
+
+Заголовок связной компоненты, которая реализует данные операции
+
+```cpp
+///////////////////////////////////////////////////////////////////
+// void find_connected_components(IplImage *mask, int poly1_hull0,
+// 								  float perimScale, int *num,
+// 								  CvRect *bbs, CvPoint *centers)
+// Эта функция очищает сегмент маски, полученный при вызове backgroundDiff,
+// от объектов переднего плана 
+//
+// mask 	Это серая (глубиной 8-bit) "строка" изображения маски, которую 
+// 			необходимо очистить
+//
+// OPTIONAL PARAMETERS:
+// poly1_hull0 	Если установлен, то аппроксимация связной компоненты до 
+// 				полигона или выпуклой оболочки (0)
+// 				(DEFAULT: polygon)
+// perimScale 	Len = image (width+height)/perimScale. Если длина контура
+// 				len < this, тогда удалить данный контур 
+// 				(DEFAULT: 4)
+// num 			Максимальное число возвращаемых прямоугольников и/или центров;
+// 				(DEFAULT: NULL)
+// bbs 			Указатель на bounding box прямоугольных векторов длинною num
+// 				(DEFAULT SETTING: NULL)
+// centers 		Указатель на вектор центров контура длинною num
+// 				(DEFAULT: NULL)
+//
+	void find_connected_components(
+		IplImage* 	mask,
+		int 		poly1_hull0 	= 1,
+		float 		perimScale 		= 4,
+		int* 		num 			= NULL,
+		CvRect* 	bbs 			= NULL,
+		CvPoint* 	centers 		= NULL
+	);
+```
+
+Разбор тела данной функции представлен ниже. В начале, задается хранилище под связные компоненты контура. Затем применяются морфологические операции открытия и закрытия для удаления небольших шумовых пикселей, после чего происходит восстановление разрушенных областей, которые сохранились после операции открытия. Функция принимает два дополнительных параметра, которые были жестко объявлены при помощи *#define*. Значения по умолчанию работают хорошо и их врядли прийдется когда-либо менять. Эти дополнительные параметры управляют тем, насколько простой должна быть граница переднего плана (чем выше число, тем проще) и сколько раз необходимо выполнять морфологические операции; чем выше число, тем выше размытие при выполнении операции открытии перед расширением во время выполнения операции закрытия. (Стоит отметить, что значение *CVCLOSE_ITR* на самом деле зависит от разрешения. Для изображений с очень высоким разрешением, значение по умолчанию равное 1, скорее всего не даст хороших результатов). Большое размытие устраняет крупные регионы шума за счет размытия границ у более крупных регионов. Параметры, используемые в приведенном коде, были подобранны опытным путем и дают довольно таки хорошие результаты, однако, никто не запрещает с ними поэксперемнтировать.
+
+```cpp
+	// Дял связанных компонент:
+	// Approx.threshold - чем больше, тем проще граница
+	//
+	#define CVCONTOUR_APPROX_LEVEL 2
+
+	// Сколько итераций размытия и/или расширения должно быть
+	//
+	#define CVCLOSE_ITR 1
+```
+
+Теперь можно перейти непосредственно к рассмотрению самого алгоритма. Первая часть подпрограммы выполняет морфологические операции открытия и закрытия:
+
+```cpp
+	void find_connected_components(
+		IplImage 	*mask,
+		int 		poly1_hull0,
+		float 		perimScale,
+		int 		*num,
+		CvRect 		*bbs,
+		CvPoint 	*centers
+	) {
+		static CvMemStorage* 	mem_storage 	= NULL;
+		static CvSeq* 			contours 		= NULL;
+
+		// Очистка строки маски
+		//
+		cvMorphologyEx( mask, mask, 0, 0, CV_MOP_OPEN, CVCLOSE_ITR );
+		cvMorphologyEx( mask, mask, 0, 0, CV_MOP_CLOSE, CVCLOSE_ITR );
+```
+
+Теперь, после удаления шумов из маски, можно найти все контуры:
+
+```cpp
+	// Поиск контуров только в больших регионах
+	//
+	if( mem_storage==NULL ) {
+		mem_storage = cvCreateMemStorage(0);
+	} else {
+		cvClearMemStorage(mem_storage);
+	}
+
+	CvContourScanner scanner = cvStartFindContours(
+		 mask
+		,mem_storage
+		,sizeof(CvContour)
+		,CV_RETR_EXTERNAL
+		,CV_CHAIN_APPROX_SIMPLE
+	);
+```
+
+Далее производится отсеивание контуров, которые слишком малы и аппроксимация остальных до полигонов или выпуклых областей (чья сложность задается в *CVCONTOUR_APPROX_LEVEL*):
+
+```cpp
+	CvSeq* 	c;
+	int 	numCont = 0;
+
+	while( (c = cvFindNextContour( scanner )) != NULL ) {
+		double len = cvContourPerimeter( c );
+		
+		// вычисление периметра
+		//
+		double q = (mask->height + mask->width)/perimScale;
+
+		// Отсеивание blob, если его периметр слишком мал
+		//
+		if( len < q ) {
+			cvSubstituteContour( scanner, NULL );
+		} else {
+		
+			// Сглаживание краев, если достаточно большие
+			//
+			CvSeq* c_new;
+			if( poly1_hull0 ) {
+			
+				// Polygonal approximation
+				//
+				c_new = cvApproxPoly(
+					 c
+					,sizeof(CvContour)
+					,mem_storage
+					,CV_POLY_APPROX_DP
+					,CVCONTOUR_APPROX_LEVEL
+					,0
+				);
+			} else {
+			
+				// Convex Hull of the segmentation
+				//
+				c_new = cvConvexHull2(
+					 c
+					,mem_storage
+					,CV_CLOCKWISE
+					,1
+				);
+			}
+			cvSubstituteContour( scanner, c_new );
+			numCont++;
+		}
+	}
+	contours = cvEndFindContours( &scanner );
+```
 
