@@ -48,50 +48,50 @@
 Пример 9-1. Чтение RGB значений всех пикселей одной строки файла и сохранение этих значений в трех отдельных файлах
 
 ```cpp
-// Сохранение на диск линейного сегмента из BGR пикселей от p1 до p2
-//
-CvCapture* 		capture = cvCreateFileCapture( argv[1] );
-int 			max_buffer;
-IplImage* 		rawImage;
-int 			r[10000], g[10000], b[10000];
-CvLineIterator 	iterator;
+	// Сохранение на диск линейного сегмента из BGR пикселей от p1 до p2
+	//
+	CvCapture* 		capture = cvCreateFileCapture( argv[1] );
+	int 			max_buffer;
+	IplImage* 		rawImage;
+	int 			r[10000], g[10000], b[10000];
+	CvLineIterator 	iterator;
 
-FILE *fptrb = fopen("blines.csv","w"); 	// Создание файлов для сохранения 
-FILE *fptrg = fopen("glines.csv","w"); 	// каждого из каналов в отдельности
-FILE *fptrr = fopen("rlines.csv","w");
+	FILE *fptrb = fopen("blines.csv","w"); 	// Создание файлов для сохранения 
+	FILE *fptrg = fopen("glines.csv","w"); 	// каждого из каналов в отдельности
+	FILE *fptrr = fopen("rlines.csv","w");
 
-// Главный цикл обработки
-//
-for(;;) {
+	// Главный цикл обработки
+	//
+	for(;;) {
 
-	if( !cvGrabFrame( capture ))
-		break;
+		if( !cvGrabFrame( capture ))
+			break;
 
-	rawImage = cvRetrieveFrame( capture );
-	max_buffer = cvInitLineIterator(rawImage,pt1,pt2,&iterator,8,0);
-	for(int j=0; j<max_buffer; j++){
+		rawImage = cvRetrieveFrame( capture );
+		max_buffer = cvInitLineIterator(rawImage,pt1,pt2,&iterator,8,0);
+		for(int j=0; j<max_buffer; j++){
 
-		// Запись значений
-		// 
+			// Запись значений
+			// 
 
-		fprintf(fptrb, "%d,", iterator.ptr[0]); // синий
-		fprintf(fptrg, "%d,", iterator.ptr[1]); // зеленый
-		fprintf(fptrr, "%d,", iterator.ptr[2]); // красный
-		
-		iterator.ptr[2] = 255; // Маркировка этого образца красным
+			fprintf(fptrb, "%d,", iterator.ptr[0]); // синий
+			fprintf(fptrg, "%d,", iterator.ptr[1]); // зеленый
+			fprintf(fptrr, "%d,", iterator.ptr[2]); // красный
+			
+			iterator.ptr[2] = 255; // Маркировка этого образца красным
 
-		CV_NEXT_LINE_POINT(iterator); // Переход к следующему пикселю
+			CV_NEXT_LINE_POINT(iterator); // Переход к следующему пикселю
+		}
+
+		// Вывод данных в строках
+		//
+		fprintf(fptrb, "/n"); fprintf(fptrg,"/n"); fprintf(fptrr, "/n");
 	}
 
-	// Вывод данных в строках
+	// Очистка
 	//
-	fprintf(fptrb, "/n"); fprintf(fptrg,"/n"); fprintf(fptrr, "/n");
-}
-
-// Очистка
-//
-fclose(fptrb); fclose(fptrg); fclose(fptrr);
-cvReleaseCapture( &capture );
+	fclose(fptrb); fclose(fptrg); fclose(fptrr);
+	cvReleaseCapture( &capture );
 ```
 
 Получить линию выборки можно ещё проще, а именно:
@@ -151,89 +151,89 @@ cvReleaseCapture( &capture );
 Вначале будут созданы указатели на несколько черновых и хранящих статистику изображений, потребность в которых будет на всем жизненном цикле программы. Возможно, будет полезно отсортировать эти указатели, исходя из типа изображений, на которые они ссылаются.
 
 ```cpp
-// Глобальное хранилище
-// Float, 3-channel images
-//
-IplImage *IavgF,*IdiffF, *IprevF, *IhiF, *IlowF;
-IplImage *Iscratch, *Iscratch2;
+	// Глобальное хранилище
+	// Float, 3-channel images
+	//
+	IplImage *IavgF,*IdiffF, *IprevF, *IhiF, *IlowF;
+	IplImage *Iscratch, *Iscratch2;
 
-// Float, 1-channel images
-//
-IplImage *Igray1,*Igray2, *Igray3;
-IplImage *Ilow1, *Ilow2, *Ilow3;
-IplImage *Ihi1, *Ihi2, *Ihi3;
+	// Float, 1-channel images
+	//
+	IplImage *Igray1,*Igray2, *Igray3;
+	IplImage *Ilow1, *Ilow2, *Ilow3;
+	IplImage *Ihi1, *Ihi2, *Ihi3;
 
-// Byte, 1-channel image
-//
-IplImage *Imaskt;
+	// Byte, 1-channel image
+	//
+	IplImage *Imaskt;
 
-// Подсчет количества изображений, которые были изучены 
-// для последующего усреднения
-// 
-float Icount;
+	// Подсчет количества изображений, которые были изучены 
+	// для последующего усреднения
+	// 
+	float Icount;
 ```
 
 Затем будет создан единый вызов для выделения памяти под все необходимые промежуточные изображения. Для удобства будет передано одно изображение (из видео), которое может быть использовано в качестве эталона для калибровки промежуточных изображений.
 
 ```cpp
-// Это просто эталонное изображения для распределительных 
-// целей (используется для калибровки)
-//
-void AllocateImages( IplImage* I )
-{
-    CvSize sz 	= cvGetSize( I );
+	// Это просто эталонное изображения для распределительных 
+	// целей (используется для калибровки)
+	//
+	void AllocateImages( IplImage* I )
+	{
+		CvSize sz 	= cvGetSize( I );
 
-    IavgF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
-    IdiffF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
-    IprevF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
-    IhiF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
-    IlowF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
-    Ilow1 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
-    Ilow2 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
-    Ilow3 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
-    Ihi1 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
-    Ihi2 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
-    Ihi3 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
-    cvZero( IavgF );
-    cvZero( IdiffF );
-    cvZero( IprevF );
-    cvZero( IhiF );
-    cvZero( IlowF );
-    Icount = 0.00001; // защита от деления на 0
+		IavgF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
+		IdiffF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
+		IprevF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
+		IhiF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
+		IlowF 		= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
+		Ilow1 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
+		Ilow2 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
+		Ilow3 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
+		Ihi1 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
+		Ihi2 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
+		Ihi3 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
+		cvZero( IavgF );
+		cvZero( IdiffF );
+		cvZero( IprevF );
+		cvZero( IhiF );
+		cvZero( IlowF );
+		Icount = 0.00001; // защита от деления на 0
 
-    Iscratch 	= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
-    Iscratch2 	= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
-    Igray1 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
-    Igray2 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
-    Igray3 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
-    Imaskt 		= cvCreateImage( sz, IPL_DEPTH_8U,  1 );
-    cvZero( Iscratch );
-    cvZero( Iscratch2 );
-}
+		Iscratch 	= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
+		Iscratch2 	= cvCreateImage( sz, IPL_DEPTH_32F, 3 );
+		Igray1 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
+		Igray2 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
+		Igray3 		= cvCreateImage( sz, IPL_DEPTH_32F, 1 );
+		Imaskt 		= cvCreateImage( sz, IPL_DEPTH_8U,  1 );
+		cvZero( Iscratch );
+		cvZero( Iscratch2 );
+	}
 ```
 
 В следующем куске кода представлены процессы накопления фона изображения и накопления абсолютных значений межкадровых разностей изображения (процесс вычисления длится быстрее "прокси"" (средняя разница не является математическим эквивалентом стандартному отклонению, но в данном контексте достаточно близко, чтобы давать результаты аналогичного качества) для изучения стандартного отклонения пикселей избражения). Эта операция выполнятеся, как правило, для 30-1000 кадров, иногда только один кадр от каждой секунды, а иногда и для всех кадров. Процедура вызывается с трехканальным изображением с глубиной 8 бит.
 
 ```cpp
-// Изучение статистики фона кадра 
-// I - это цветной образец фона, 3-канальный, 8u
-//
-void accumulateBackground( IplImage *I )
-{
-	static int first = 1; 				// не потокобезопасно
-	cvCvtScale( I, Iscratch, 1, 0 ); 	// конвертация во float
-
-	if( !first ) 
+	// Изучение статистики фона кадра 
+	// I - это цветной образец фона, 3-канальный, 8u
+	//
+	void accumulateBackground( IplImage *I )
 	{
-		cvAcc( Iscratch, IavgF );
-		cvAbsDiff( Iscratch, IprevF, Iscratch2 );
-		cvAcc( Iscratch2, IdiffF );
-		Icount += 1.0;
-	}
+		static int first = 1; 				// не потокобезопасно
+		cvCvtScale( I, Iscratch, 1, 0 ); 	// конвертация во float
 
-	first = 0;
-	cvCopy( Iscratch, IprevF );
-}
+		if( !first ) 
+		{
+			cvAcc( Iscratch, IavgF );
+			cvAbsDiff( Iscratch, IprevF, Iscratch2 );
+			cvAcc( Iscratch2, IdiffF );
+			Icount += 1.0;
+		}
+
+		first = 0;
+		cvCopy( Iscratch, IprevF );
+	}
 ```
 
 Сначала используется функция *cvCvtScale()* для преобразования необработанного фонового 8-битного трехканального изображения в трехканальное изображение типа float. Затем происходит накопление необработанного float-изображения в *IavgF*. Потом происходит высичление  межкадровой абсолютной разницы при помощи *cvAbsDiff()* и накопление её в изображении *IdiffF*. Каждый раз при накоплении этих изображений увеличивается глобальный счетчик изображений *Icount*, который будет использован позже для усреднения.
@@ -241,17 +241,17 @@ void accumulateBackground( IplImage *I )
 Единожды накопив достаточное количество кадров, можно конвертировать их в статистическую модель фона. В результате это позволит вычислить среднее значение и отклонение (абсолютное значение средней разницы) каждого пикселя.
 
 ```cpp
-void createModelsfromStats()
-{
-	cvConvertScale( IavgF,  IavgF,  (double)(1.0/Icount) );
-	cvConvertScale( IdiffF, IdiffF, (double)(1.0/Icount) );
+	void createModelsfromStats()
+	{
+		cvConvertScale( IavgF,  IavgF,  (double)(1.0/Icount) );
+		cvConvertScale( IdiffF, IdiffF, (double)(1.0/Icount) );
 
-	// Модификация разности, чтобы она всегда была не равна 0
-	//
-	cvAddS( IdiffF, cvScalar( 1.0, 1.0, 1.0), IdiffF );
-	setHighThreshold( 7.0 );
-	setLowThreshold( 6.0 );
-}
+		// Модификация разности, чтобы она всегда была не равна 0
+		//
+		cvAddS( IdiffF, cvScalar( 1.0, 1.0, 1.0), IdiffF );
+		setHighThreshold( 7.0 );
+		setLowThreshold( 6.0 );
+	}
 ```
 
 В представленном куске кода функция *cvConvertScale()* вычисляет значения среднего и абсолютной разницы за счет деления на число накопленных изображений. В качестве меры предостороженности, предполагается, что средняя разница изображений, по крайней мере, меньше 1; данный показатель необходимо будет изменять во время пороговых преобразований и избегать ситуаций, когда эти два порога могут стать равными.
@@ -259,18 +259,18 @@ void createModelsfromStats()
 Обе вспомогательные функции *setHighThreshold()* и *setLowThreshold()* задают порог, основываясь на абсолютном значении межкадровой средней разности. Вызов *setHighThreshold(7.0)* устанавливает порог таким, что при любом значении, которое превысит в 7 раз среднюю абсолютную разность для этого пикселя, указывает на то, что этот пиксель принадлежит переднему плану; аналогичным образом вызов *setLowThreshold(6.0)* устанавливает нижний порог. Значение, лежащее между этими порогами, указывает на принадлежность пикселя к фону. 
 
 ```cpp
-void setHighThreshold( float scale )
-{
-	cvConvertScale( IdiffF, Iscratch, scale );
-	cvAdd( Iscratch, IavgF, IhiF );
-	cvSplit( IhiF, Ihi1, Ihi2, Ihi3, 0 );
-}
-void setLowThreshold( float scale )
-{
-	cvConvertScale( IdiffF, Iscratch, scale );
-	cvSub( IavgF, Iscratch, IlowF );
-	cvSplit( IlowF, Ilow1, Ilow2, Ilow3, 0 );
-}
+	void setHighThreshold( float scale )
+	{
+		cvConvertScale( IdiffF, Iscratch, scale );
+		cvAdd( Iscratch, IavgF, IhiF );
+		cvSplit( IhiF, Ihi1, Ihi2, Ihi3, 0 );
+	}
+	void setLowThreshold( float scale )
+	{
+		cvConvertScale( IdiffF, Iscratch, scale );
+		cvSub( IavgF, Iscratch, IlowF );
+		cvSplit( IlowF, Ilow1, Ilow2, Ilow3, 0 );
+	}
 ```
 
 И вновь в *setLowThreshold()* и *setHighThreshold()* используется *cvConvertScale()* для перемножения значений перед сложением или вычитанием этих диапазонов по отношению к *IavgF*. Это действие устанавливает *IhiF* и *IlowF* диапазоны для каждого канала изображения при помощи *cvSplit()*.
@@ -278,33 +278,33 @@ void setLowThreshold( float scale )
 Как только появляется модель фона в комплекте с верхним и нижним порогами можно использовать это для сегментации изображения на передний план (то, что не "указано" на фоновом изображении) и фон (все, что находится между верхним и нижним порогами фоновой модели). Сегментация выполняется при помощи следующего куска кода:
 
 ```cpp
-// Создание бинарного изображения: маска 0,255, где 255 указывает на передний план
-// I - входное трехканальное 8-битное изображение
-// Imask - одноканальное 8-битное изображение маски, которое должно быть создано
-// 
-void backgroundDiff( IplImage *I, IplImage *Imask ) 
-{
-    cvCvtScale(I,Iscratch,1,0); // Конвертирование во float
-    cvSplit( Iscratch, Igray1,Igray2,Igray3, 0 );
+	// Создание бинарного изображения: маска 0,255, где 255 указывает на передний план
+	// I - входное трехканальное 8-битное изображение
+	// Imask - одноканальное 8-битное изображение маски, которое должно быть создано
+	// 
+	void backgroundDiff( IplImage *I, IplImage *Imask ) 
+	{
+		cvCvtScale(I,Iscratch,1,0); // Конвертирование во float
+		cvSplit( Iscratch, Igray1,Igray2,Igray3, 0 );
 
-    // Channel 1
-    //
-    cvInRange(Igray1,Ilow1,Ihi1,Imask);
-    
-    // Channel 2
-    //
-    cvInRange(Igray2,Ilow2,Ihi2,Imaskt);
-    cvOr(Imask,Imaskt,Imask);
-    
-    // Channel 3
-    //
-    cvInRange(Igray3,Ilow3,Ihi3,Imaskt);
-    cvOr(Imask,Imaskt,Imask);
-    
-    // Инвертирование результата
-    //
-    cvSubRS( Imask, cvScalar(255), Imask);
-}
+		// Channel 1
+		//
+		cvInRange(Igray1,Ilow1,Ihi1,Imask);
+
+		// Channel 2
+		//
+		cvInRange(Igray2,Ilow2,Ihi2,Imaskt);
+		cvOr(Imask,Imaskt,Imask);
+
+		// Channel 3
+		//
+		cvInRange(Igray3,Ilow3,Ihi3,Imaskt);
+		cvOr(Imask,Imaskt,Imask);
+
+		// Инвертирование результата
+		//
+		cvSubRS( Imask, cvScalar(255), Imask);
+	}
 ```
 
 Вначале эта функция преобразует исходное изображение *I* (изображение, которое необходимо сегментировать) в вещественное изображение с помощью функции *cvCvtScale()*. Затем выполняется конвертирование трехканального изображения в одноканальные при помощи *cvSplit()*. Потом эти одноканальные изображения проходят проверку на соответствие верхней и нижней амплитуде среднего фонового пикселя при помощи функции *cvInRange()*, которая устанавливает значения пикселей 8-битного изображения *Imask* в *max* (255), когда данное значение лежит в указанном диапазоне, иначе в 0. Используя логическую функцию OR для каждого канала, осуществляется перенос результатов сегментации на изображение *Imask*; в результате любые сильные различия в любом канале можно рассматривать как свидетельство принадлежности пикселя к объекту переднего плана. В заключении, происходит инвертирование *Imask* при помощи *cvSubRS()*, потому что передний фон должен содержать значения вне диапазона, а не в диапазоне. Изображение маски является результатом.
@@ -312,26 +312,26 @@ void backgroundDiff( IplImage *I, IplImage *Imask )
 Так же необходимо освободить память, занимаемую изображениями по завершении использования фоновой модели:
 
 ```cpp
-void DeallocateImages()
-{
-	cvReleaseImage( &IavgF);
-	cvReleaseImage( &IdiffF );
-	cvReleaseImage( &IprevF );
-	cvReleaseImage( &IhiF );
-	cvReleaseImage( &IlowF );
-	cvReleaseImage( &Ilow1 );
-	cvReleaseImage( &Ilow2 );
-	cvReleaseImage( &Ilow3 );
-	cvReleaseImage( &Ihi1 );
-	cvReleaseImage( &Ihi2 );
-	cvReleaseImage( &Ihi3 );
-	cvReleaseImage( &Iscratch );
-	cvReleaseImage( &Iscratch2 );
-	cvReleaseImage( &Igray1 );
-	cvReleaseImage( &Igray2 );
-	cvReleaseImage( &Igray3 );
-	cvReleaseImage( &Imaskt);
-}
+	void DeallocateImages()
+	{
+		cvReleaseImage( &IavgF);
+		cvReleaseImage( &IdiffF );
+		cvReleaseImage( &IprevF );
+		cvReleaseImage( &IhiF );
+		cvReleaseImage( &IlowF );
+		cvReleaseImage( &Ilow1 );
+		cvReleaseImage( &Ilow2 );
+		cvReleaseImage( &Ilow3 );
+		cvReleaseImage( &Ihi1 );
+		cvReleaseImage( &Ihi2 );
+		cvReleaseImage( &Ihi3 );
+		cvReleaseImage( &Iscratch );
+		cvReleaseImage( &Iscratch2 );
+		cvReleaseImage( &Igray1 );
+		cvReleaseImage( &Igray2 );
+		cvReleaseImage( &Igray3 );
+		cvReleaseImage( &Imaskt);
+	}
 ```
 
 В результате был рассмотрен простой метод изучения фона сцены и сегментация объектов переднего плана. Этот метод показывает хорошие результаты, когда сцена не содержит движущихся объектов фона (например, развивающихся занавесок или деревьев). Так же предполагается, что освещение остается постоянным (например, в помещении неподвижных сцен). Результаты работы метода представлены на рисунке 9-5.
@@ -345,22 +345,22 @@ void DeallocateImages()
 **Определение среднего значения**. Наиболее простой метод нахождения среднего заключается в сложении всего набора изображений с использованием *cvAcc()* и последующим делением на общее количество изображений.
 
 ```cpp
-void cvAcc(
-	 const Cvrr* 	image
-	,CvArr* 		sum
-	,const CvArr* 	mask = NULL
-);
+	void cvAcc(
+		 const Cvrr* 	image
+		,CvArr* 		sum
+		,const CvArr* 	mask = NULL
+	);
 ```
 
 Альтернативный метод заключается в использование скользящего среднего:
 
 ```cpp
-void cvRunningAvg(
-	 const CvArr* 	image
-	,CvArr* 		acc
-	,double 		alpha
-	,const CvArr* 	mask = NULL
-);
+	void cvRunningAvg(
+		 const CvArr* 	image
+		,CvArr* 		acc
+		,double 		alpha
+		,const CvArr* 	mask = NULL
+	);
 ```
 
 Скользящее среднее может быть найдено по следующей формуле:
@@ -372,11 +372,11 @@ void cvRunningAvg(
 **Определение дисперсии**. Возможность аккумулировать квадраты изображений позволяет быстро вычислять дисперсии отдельных пикселей.
 
 ```cpp
-void cvSquareAcc(
-	 const CvArr* 	image
-	,CvArr* 		sqsum
-	,const CvArr* 	mask = NULL
-);
+	void cvSquareAcc(
+		 const CvArr* 	image
+		,CvArr* 		sqsum
+		,const CvArr* 	mask = NULL
+	);
 ```
 
 Дисперсия конечной последовательности определяется по формуле:
@@ -392,12 +392,12 @@ void cvSquareAcc(
 **Определение ковариации**. Увидеть, как меняется изображение с течением времени, можно путем выбора определенного *лага* (отставания), а затем умножить текущее изображение на изображение из прошлого, которое соответствует данному лагу (отставанию). Функция *cvMultiplyAcc()* будет выполнять попиксельное перемножение двух изображений, а затем добавлять результат "нарастающим итогом" в *acc*:
 
 ```cpp
-void cvMultiplyAcc(
-	 const CvArr* 	image1
-	,const CvArr* 	image2
-	,CvArr* 		acc
-	,const CvArr* 	mask = NULL
-);
+	void cvMultiplyAcc(
+		 const CvArr* 	image1
+		,const CvArr* 	image2
+		,CvArr* 		acc
+		,const CvArr* 	mask = NULL
+	);
 ```
 
 Для ковариации есть формула, аналогичная формуле для дисперсии. Эта формула выполняет вычисления за один проход за счет алгебраических преобразований стандартной формулы:
@@ -439,25 +439,25 @@ void cvMultiplyAcc(
 Теперь настало время для более детального разбора алгоритма кодвой книги. Для начала необходимо создать структуру кодовой книги, которая будет просто указывать на группу *boxes* пространства YUV:
 
 ```cpp
-typedef struct code_book {
-	code_element 	**cb;
-	int 			numEntries;
-	int 			t; 			// количество обращений
-} codeBook;
+	typedef struct code_book {
+		code_element 	**cb;
+		int 			numEntries;
+		int 			t; 			// количество обращений
+	} codeBook;
 ```
 
 *numEntries* - количество записей в кодовой книге. Переменная *t* подсчитывает число точек, накопленных от начала или с последеней операции очищения. Описание структуры элемента представлено ниже:
 
 ```cpp
-#define CHANNELS 3
-typedef struct ce {
-	uchar learnHigh[CHANNELS]; 	// Верхний порог обучения
-	uchar learnLow[CHANNELS]; 	// Нижний порог обучения
-	uchar max[CHANNELS]; 		// Верхняя граница box
-	uchar min[CHANNELS]; 		// Нижняя граница box
-	int t_last_update; 			// Позволяет убирать устаревшие записи
-	int stale; 					// max negative run (продолжительный период неактивности)
-} code_element;
+	#define CHANNELS 3
+	typedef struct ce {
+		uchar learnHigh[CHANNELS]; 	// Верхний порог обучения
+		uchar learnLow[CHANNELS]; 	// Нижний порог обучения
+		uchar max[CHANNELS]; 		// Верхняя граница box
+		uchar min[CHANNELS]; 		// Нижняя граница box
+		int t_last_update; 			// Позволяет убирать устаревшие записи
+		int stale; 					// max negative run (продолжительный период неактивности)
+	} code_element;
 ```
 
 Каждая запись кодовой книги расходует 4 байта на канал плюс 2 или *CHANNELSx4+4+4* байт (20 байт при использовании трех каналов). Можно установить *CHANNELS* в любое положительное целое значение меньше или равное числу каналов цветного изображения, но, как правило, используется 1 ("Y" или только яркость) или 3 (YUV, HSV). В этой структуре для каждого канала *max* и *min* - это границы кодовой книги. Параметры *learnHigh* и *learnLow* - это пороговые значения, управляющие созданием новых записей. Более конкретно: новая запись будет создана, если попадется новый пиксель не лежащий в диапазоне *min - learnLow* и *max + learnHigh* в каждом из каналов. Время последнего обновления *t_last_update* и *stale* используются для удаления редко используемых записей кодовой книги во время обучения. Теперь можно переходить к изучению функций, которые испоьзуют эту структуру для изучения динамически меняющегося фона.
@@ -777,47 +777,47 @@ uchar background_diff(
 // centers 		Указатель на вектор центров контура длинною num
 // 				(DEFAULT: NULL)
 //
-	void find_connected_components(
-		IplImage* 	mask,
-		int 		poly1_hull0 	= 1,
-		float 		perimScale 		= 4,
-		int* 		num 			= NULL,
-		CvRect* 	bbs 			= NULL,
-		CvPoint* 	centers 		= NULL
-	);
+void find_connected_components(
+	IplImage* 	mask,
+	int 		poly1_hull0 	= 1,
+	float 		perimScale 		= 4,
+	int* 		num 			= NULL,
+	CvRect* 	bbs 			= NULL,
+	CvPoint* 	centers 		= NULL
+);
 ```
 
 Разбор тела данной функции представлен ниже. В начале, задается хранилище под связные компоненты контура. Затем применяются морфологические операции открытия и закрытия для удаления небольших шумовых пикселей, после чего происходит восстановление разрушенных областей, которые сохранились после операции открытия. Функция принимает два дополнительных параметра, которые были жестко объявлены при помощи *#define*. Значения по умолчанию работают хорошо и их врядли прийдется когда-либо менять. Эти дополнительные параметры управляют тем, насколько простой должна быть граница переднего плана (чем выше число, тем проще) и сколько раз необходимо выполнять морфологические операции; чем выше число, тем выше размытие при выполнении операции открытии перед расширением во время выполнения операции закрытия. (Стоит отметить, что значение *CVCLOSE_ITR* на самом деле зависит от разрешения. Для изображений с очень высоким разрешением, значение по умолчанию равное 1, скорее всего не даст хороших результатов). Большое размытие устраняет крупные регионы шума за счет размытия границ у более крупных регионов. Параметры, используемые в приведенном коде, были подобранны опытным путем и дают довольно таки хорошие результаты, однако, никто не запрещает с ними поэксперемнтировать.
 
 ```cpp
-	// Дял связанных компонент:
-	// Approx.threshold - чем больше, тем проще граница
-	//
-	#define CVCONTOUR_APPROX_LEVEL 2
+// Для связанных компонент:
+// Approx.threshold - чем больше, тем проще граница
+//
+#define CVCONTOUR_APPROX_LEVEL 2
 
-	// Сколько итераций размытия и/или расширения должно быть
-	//
-	#define CVCLOSE_ITR 1
+// Сколько итераций размытия и/или расширения должно быть
+//
+#define CVCLOSE_ITR 1
 ```
 
 Теперь можно перейти непосредственно к рассмотрению самого алгоритма. Первая часть подпрограммы выполняет морфологические операции открытия и закрытия:
 
 ```cpp
-	void find_connected_components(
-		IplImage 	*mask,
-		int 		poly1_hull0,
-		float 		perimScale,
-		int 		*num,
-		CvRect 		*bbs,
-		CvPoint 	*centers
-	) {
-		static CvMemStorage* 	mem_storage 	= NULL;
-		static CvSeq* 			contours 		= NULL;
+void find_connected_components(
+	IplImage 	*mask,
+	int 		poly1_hull0,
+	float 		perimScale,
+	int 		*num,
+	CvRect 		*bbs,
+	CvPoint 	*centers
+) {
+	static CvMemStorage* 	mem_storage 	= NULL;
+	static CvSeq* 			contours 		= NULL;
 
-		// Очистка строки маски
-		//
-		cvMorphologyEx( mask, mask, 0, 0, CV_MOP_OPEN, CVCLOSE_ITR );
-		cvMorphologyEx( mask, mask, 0, 0, CV_MOP_CLOSE, CVCLOSE_ITR );
+	// Очистка строки маски
+	//
+	cvMorphologyEx( mask, mask, 0, 0, CV_MOP_OPEN, CVCLOSE_ITR );
+	cvMorphologyEx( mask, mask, 0, 0, CV_MOP_CLOSE, CVCLOSE_ITR );
 ```
 
 Теперь, после удаления шумов из маски, можно найти все контуры:
@@ -895,79 +895,80 @@ uchar background_diff(
 В предыдущем коде, *CV_POLY_APPROX_DP* подразумевает использование алгоритма приближения *Douglas-Peucker*, а *CV_CLOCKWISE* по умолчанию подразумевает выпуклую оболочку контура. Все эти обработки в результате приводит к получению списка контуров. Перед нанесением контуров обратно на маску, необходимо определить цвета:
 
 ```cpp
-// Некоторые вспомогательные переменные
-const CvScalar CVX_WHITE = CV_RGB(0xff,0xff,0xff)
-const CvScalar CVX_BLACK = CV_RGB(0x00,0x00,0x00)
+	// Некоторые вспомогательные переменные
+	const CvScalar CVX_WHITE = CV_RGB(0xff,0xff,0xff)
+	const CvScalar CVX_BLACK = CV_RGB(0x00,0x00,0x00)
 ```
 
 Эти определения будут использованы в следующем коде, где впервые произойдет обнуление маски с последующим нанесением удаленных контуров на маску. Кроме того, будет выполнена проверка потребности в сборе статистики по контурам (*bounding boxes* и центры):
 
 ```cpp
-// PAINT THE FOUND REGIONS BACK INTO THE IMAGE
-//
-cvZero( mask );
-IplImage *maskTemp;
+	// PAINT THE FOUND REGIONS BACK INTO THE IMAGE
+	//
+	cvZero( mask );
+	IplImage *maskTemp;
 
-// CALC CENTER OF MASS AND/OR BOUNDING RECTANGLES
-//
-if(num != NULL) {
+	// CALC CENTER OF MASS AND/OR BOUNDING RECTANGLES
+	//
+	if(num != NULL) {
 
-// Пользователь хочет собирать статистику
-//
-int N = *num, numFilled = 0, i=0;
-CvMoments moments;
-double M00, M01, M10;
-maskTemp = cvCloneImage(mask);
-for(i=0, c=contours; c != NULL; c = c->h_next,i++ ) {
-if(i < N) {
+		// Пользователь хочет собирать статистику
+		//
+		int N = *num, numFilled = 0, i=0;
+		CvMoments moments;
+		double M00, M01, M10;
+		maskTemp = cvCloneImage(mask);
+		for(i = 0, c = contours; c != NULL; c = c->h_next, i++ ) {
+			if(i < N) {
 
-// Only process up to *num of them
-//
-cvDrawContours(
-maskTemp,
-c,
-CVX_WHITE,
-CVX_WHITE,
--1,
-CV_FILLED,
-8
-);
+				// Only process up to *num of them
+				//
+				cvDrawContours(
+					 maskTemp
+					,c
+					,CVX_WHITE
+					,CVX_WHITE
+					,-1
+					,CV_FILLED
+					,8
+				);
 
-// Поиск центра для каждого контура
-//
-if(centers != NULL) {
-cvMoments(maskTemp,&moments,1);
-M00 = cvGetSpatialMoment(&moments,0,0);
-M10 = cvGetSpatialMoment(&moments,1,0);
-M01 = cvGetSpatialMoment(&moments,0,1);
-centers[i].x = (int)(M10/M00);
-centers[i].y = (int)(M01/M00);
-}
+				// Поиск центра для каждого контура
+				//
+				if(centers != NULL) {
+					cvMoments( maskTemp, &moments, 1 );
+					M00 = cvGetSpatialMoment( &moments, 0, 0 );
+					M10 = cvGetSpatialMoment( &moments, 1, 0 );
+					M01 = cvGetSpatialMoment( &moments, 0, 1 );
+					centers[i].x = (int)(M10/M00);
+					centers[i].y = (int)(M01/M00);
+				}
 
-// Ограничивающие прямоугольники вокруг blobs
-//
-if(bbs != NULL) {
-bbs[i] = cvBoundingRect(c);
-}
-cvZero(maskTemp);
-numFilled++;
-}
+				// Ограничивающие прямоугольники вокруг blobs
+				//
+				if(bbs != NULL) {
+					bbs[i] = cvBoundingRect(c);
+				}
+				cvZero(maskTemp);
+				numFilled++;
+			}
 
-// Рисование контуров на маске
-//
-cvDrawContours(
-mask,
-c,
-CVX_WHITE,
-CVX_WHITE,
--1,
-CV_FILLED,
-8
-);
-} // конец цикла по контурам
-*num = numFilled;
-cvReleaseImage( &maskTemp);
-}
+			// Рисование контуров на маске
+			//
+			cvDrawContours(
+				 mask
+				,c
+				,CVX_WHITE
+				,CVX_WHITE
+				,-1
+				,CV_FILLED
+				,8
+			);
+		}
+
+		*num = numFilled;
+		cvReleaseImage( &maskTemp);
+	}
 ```
 
 Если пользователю не нужны *bounding boxes* и центры в конечных регионах маски, необходимо просто отбросить контуры, представляющие достаточно большие связанные компоненты фона.
@@ -975,20 +976,21 @@ cvReleaseImage( &maskTemp);
 ```cpp
 // Иначе просто нарисовать обработанные контуры на маске
 //
-else {
-// Пользователю не нужна статистика, просто нарисовать контуры
-//
-for( c=contours; c != NULL; c = c->h_next ) {
-cvDrawContours(
-mask,
-c,
-CVX_WHITE,
-CVX_BLACK,
--1,
-CV_FILLED,
-8
-);
-}
+	else {
+		// Пользователю не нужна статистика, просто нарисовать контуры
+		//
+		for( c = contours; c != NULL; c = c->h_next ) {
+			cvDrawContours(
+				 mask
+				,c
+				,CVX_WHITE
+				,CVX_BLACK
+				,-1
+				,CV_FILLED
+				,8
+			);
+		}
+	}
 }
 ```
 
