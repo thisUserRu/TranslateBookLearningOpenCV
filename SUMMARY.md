@@ -84,7 +84,7 @@
 * [Составные части и сегментация изображения](Chapter9/PartsAndSegments.md)
    * [Составные части и сегментация](Chapter9/PartsAndSegments.md)
    * [Исключение фона](Chapter9/BackgroundSubtraction.md)
-   * [Алгоритм Watershed](Chapter9/WatershedAlgorithm.md)
+   * [Алгоритм водораздела](Chapter9/WatershedAlgorithm.md)
    * [(!) Repair изображения по Inpainting](Chapter9/ImageRepairByInpainting.md)
    * [Mean-Shift сегментация](Chapter9/MeanShiftSegmentation.md)
    * [Триангуляция Delaunay, тесселяция Voronoi](Chapter9/DelaunayTriangulationVoronoiTesselation.md)
