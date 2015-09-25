@@ -1,4 +1,4 @@
-## (П]|(РС)|(РП) Триангуляция Delaunay, тесселяция Voronoi
+## [П]|(РС]|(РП) Триангуляция Delaunay, тесселяция Voronoi
 
 *Триангуляция Delaunay* - это техника, изобретенная в 1934 для соединения точек в пространстве в треугольную группу таким образом, чтобы минимальный угол среди всех углов в триангуляции был максимальным. Это означает, что триангуляция Delaunay пытается избегать "тонких" треугольников при триангуляции точек. Для того чтобы понять суть триангуляции посмотрите на рисунок 9-12: любая окружность, описанная вокруг вершин любого треугольника не содержит других вершин. Это называется *свойство описанной окружности* (часть c на рисунке).
 
@@ -38,54 +38,57 @@
 Для начала необходимо выделить место под хранение результатов триангуляции и тесселяции. Так же нужен внешний ограничивающий прямоугольник (чтобы ускорить вычисления, алгоритм должен работать с фиктивным внешним треугольником, расположенным за пределами ограничивающего прямоугольника). Что бы все это сделать, предположим, что точки располагаются внутри изображения 600x600:
 
 ```cpp
-// Хранилище и структура для DELAUNAY SUBDIVISION
+// Хранилище и структура для подраздела Delaunay
 //
-CvRect rect = { 0, 0, 600, 600 }; // Внешний ограничивающий прямоугольник
-CvMemStorage* storage; // Хранилище
-storage = cvCreateMemStorage(0); // Инициализация хранилища
-CvSubdiv2D* subdiv; // The subdivision itself
+CvRect rect = { 0, 0, 600, 600 }; 	// Внешний ограничивающий прямоугольник
+
+CvMemStorage* storage; 				// Хранилище
+storage = cvCreateMemStorage(0); 	// Инициализация хранилища
+
+CvSubdiv2D* subdiv; 				// Подраздел
 subdiv = init_delaunay( storage, rect);
 ```
 
-Код использует вызов функции *init_delaunay()*, которая является удобной "упаковкой" нескольких функций OpenCV:
+В коде используется функция *init_delaunay()*, которая является удобной "упаковкой" нескольких функций OpenCV:
 
 ```cpp
-// инициализация удобной функции для DELAUNAY SUBDIVISION
+// Инициализация удобной функции для подраздела Delaunay
 //
-CvSubdiv2D* init_delaunay(
-    CvMemStorage* storage,
-    CvRect rect
-    ) {
-        CvSubdiv2D* subdiv;
-        subdiv = cvCreateSubdiv2D(
-            CV_SEQ_KIND_SUBDIV2D,
-            sizeof(*subdiv),
-            sizeof(CvSubdiv2DPoint),
-            sizeof(CvQuadEdge2D),
-            storage
-        );
-        cvInitSubdivDelaunay2D( subdiv, rect ); // установка ограничительного прямоугольника
-        return subdiv;
+CvSubdiv2D* init_delaunay( CvMemStorage* storage, CvRect rect ){
+	CvSubdiv2D* subdiv;
+	
+	subdiv = cvCreateSubdiv2D(
+		 CV_SEQ_KIND_SUBDIV2D
+		,sizeof(*subdiv)
+		,sizeof(CvSubdiv2DPoint)
+		,sizeof(CvQuadEdge2D)
+		,storage
+	);
+
+	cvInitSubdivDelaunay2D( subdiv, rect ); // Установка ограничительного прямоугольника
+	
+	return subdiv;
 }
 ```
 
-Далее необходима логика добавления точек. Эти точки должны быть типа float, 32F:
+Далее представлена логика добавления точек. Эти точки должны быть типа float, 32F:
 
 ```cpp
-CvPoint2D32f fp; // This is our point holder
-for( i = 0; i < as_many_points_as_you_want; i++ ) {
-    // However you want to set points
-    //
-    fp = your_32f_point_list[i];
-    cvSubdivDelaunay2DInsert( subdiv, fp );
-}
+	CvPoint2D32f fp; // Собственно сами точки
+	for( i = 0; i < as_many_points_as_you_want; i++ ) {
+
+	    // Собственно само добавление
+	    //
+	    fp = your_32f_point_list[i];
+	    cvSubdivDelaunay2DInsert( subdiv, fp );
+	}
 ```
 
 Можно конвертировать целые точки в 32f точки с помощью удобного макроса *cvPoint2D32f(double x, double y)* или *cvPointTo32f(CvPoint point)*, расположенного в *cxtypes.h*. Теперь, когда можно добавлять точки в триангуляцию Делоне, можно создавать и удалять соответствующую тесселяцию Вороного:
 
 ```cpp
-cvCalcSubdivVoronoi2D( subdiv ); // Занести данные Voronoi в subdiv
-cvClearSubdivVoronoi2D( subdiv ); // Удалить данные Voronoi из subdiv
+	cvCalcSubdivVoronoi2D( subdiv ); // Занести данные Voronoi в subdiv
+	cvClearSubdivVoronoi2D( subdiv ); // Удалить данные Voronoi из subdiv
 ```
 
 В обеих функциях *subdiv* имеет тип *CvSubdiv2D**. Теперь можно создавать триангуляции Delaunay из 2-х мерных наборов точек с последующим созданием и удалением тесселяций Voronoi. Однако, как получить нужные данные из этих структур? Это можно сделать, шагая от ребра к вершине или от ребра к ребру в *subdiv*; на рисунке 9-15 показаны основные манёвры, начиная с данного ребра и его точки отсчета. Далее можно найти первые ребра или вершины двумя разными способами: (1) используя внешнюю точку для обнаружения ребра или вершин; или (2) шагая по последовательности вершин или рёбер. 
@@ -110,35 +113,35 @@ cvClearSubdivVoronoi2D( subdiv ); // Удалить данные Voronoi из su
 
 ```cpp
 // Рёбра представляют собой длинные целые числа. Младшие два бита
-// это их индекс (0..3), а старшие - quad-edge указатель.
+// это их индекс (0..3), а старшие - указатель quad-edge
 // 
 typedef long CvSubdiv2DEdge;
 
-// поля структуры quad-edge
+// Поля структуры quad-edge
 //
-#define CV_QUADEDGE2D_FIELDS() 
-    int flags; 
-    struct CvSubdiv2DPoint* pt[4]; 
-    CvSubdiv2DEdge next[4];
+#define CV_QUADEDGE2D_FIELDS() 	/
+int flags; 						/
+struct CvSubdiv2DPoint* pt[4]; 	/
+CvSubdiv2DEdge next[4];
  
 typedef struct CvQuadEdge2D {
-    CV_QUADEDGE2D_FIELDS()
+	CV_QUADEDGE2D_FIELDS()
 } CvQuadEdge2D;
 ```
 
 Точки подраздела Delaulay и соответствующая структура ребра определяется следующим образом:
 
 ```cpp
-#define CV_SUBDIV2D_POINT_FIELDS() 
-    int flags; 
-    CvSubdiv2DEdge first; /*The edge "e" in the figures.*/
-    CvPoint2D32f pt;
+#define CV_SUBDIV2D_POINT_FIELDS() 	/
+	int flags; 						/
+	CvSubdiv2DEdge first; 			/ /*The edge "e" in the figures*/
+	CvPoint2D32f pt;
  
 #define CV_SUBDIV2D_VIRTUAL_POINT_FLAG (1 << 30)
  
 typedef struct CvSubdiv2DPoint
 {
-    CV_SUBDIV2D_POINT_FIELDS()
+	CV_SUBDIV2D_POINT_FIELDS()
 }
 CvSubdiv2DPoint;
 ```
@@ -151,8 +154,8 @@ CvSubdiv2DPoint;
 
 ```cpp
 CvSubdiv2DEdge cvSubdiv2DRotateEdge(
- CvSubdiv2DEdge edge
-,int type
+	 CvSubdiv2DEdge edge
+	,int type
 );
 ```
 
@@ -170,15 +173,15 @@ CvSubdiv2DEdge cvSubdiv2DRotateEdge(
 
 ```cpp
 CvSubdiv2DEdge cvSubdiv2DGetEdge(
- CvSubdiv2DEdge edge
-,CvNextEdgeType type
+	 CvSubdiv2DEdge edge
+	,CvNextEdgeType type
 );
  
-#define cvSubdiv2DNextEdge( edge )
-cvSubdiv2DGetEdge(
- edge
-,CV_NEXT_AROUND_ORG
-)
+#define cvSubdiv2DNextEdge( edge ) 	/
+	cvSubdiv2DGetEdge( 				/
+		 edge 						/
+		,CV_NEXT_AROUND_ORG 		/
+	)
 ```
 
 Аргумент *type* может принимать следующие значения:
@@ -216,16 +219,16 @@ cvSubdiv2DGetEdge(
 Помимо всего прочего, необходимо знать, как получать фактические точки из вершин Delaunay или Voronoi. Каждое ребро Delaunay или Voronoi имеет две точки, связанные с ним: *org* - исходная точка и *dst* - конечная точка. Эти точки легко можно получить при помощи следующих функций:
 
 ```cpp
-CvSubdiv2DPoint* cvSubdiv2DEdgeOrg( CvSubdiv2DEdge edge );
-CvSubdiv2DPoint* cvSubdiv2DEdgeDst( CvSubdiv2DEdge edge );
+	CvSubdiv2DPoint* cvSubdiv2DEdgeOrg( CvSubdiv2DEdge edge );
+	CvSubdiv2DPoint* cvSubdiv2DEdgeDst( CvSubdiv2DEdge edge );
 ```
 
 Следующий метод можно использовать для преобразования *CvSubdiv2DPoint* в более привычный вид:
 
 ```cpp
-CvSubdiv2DPoint ptSub; // Вершина для преобразования
-CvPoint2D32f pt32f = ptSub->pt; // преобразование к типу 32f
-CvPoint pt = cvPointFrom32f(pt32f); // преобразование к целочисленному типу
+	CvSubdiv2DPoint 	ptSub; 								// Вершина для преобразования
+	CvPoint2D32f 		pt32f 	= ptSub->pt; 				// преобразование к типу 32f
+	CvPoint 			pt 		= cvPointFrom32f(pt32f); 	// преобразование к целочисленному типу
 ```
 
 На данный момент должно было сформироваться представление о структуре подраздела и о том, как совершать обход его вершин и ребер. Теперь можно вернуться к рассмотрению методов получения исходных ребер и вершин подразделов Delaunay/Voronoi.
@@ -236,10 +239,10 @@ CvPoint pt = cvPointFrom32f(pt32f); // преобразование к цело�
 
 ```cpp
 CvSubdiv2DPointLocation cvSubdiv2DLocate(
- CvSubdiv2D* subdiv
-,CvPoint2D32f pt
-,CvSubdiv2DEdge* edge
-,CvSubdiv2DPoint** vertex = NULL
+	 CvSubdiv2D* subdiv
+	,CvPoint2D32f pt
+	,CvSubdiv2DEdge* edge
+	,CvSubdiv2DPoint** vertex = NULL
 );
 ```
 
@@ -266,9 +269,9 @@ CvSubdiv2DPointLocation cvSubdiv2DLocate(
 
 ```cpp
 CvSubdiv2DPoint* outer_vtx[3];
+
 for( i = 0; i < 3; i++ ) {
-outer_vtx[i] =
-(CvSubdiv2DPoint*)cvGetSeqElem( (CvSeq*)subdiv, I );
+	outer_vtx[i] = (CvSubdiv2DPoint*)cvGetSeqElem( (CvSeq*)subdiv, I );
 }
 ```
 
@@ -276,9 +279,9 @@ outer_vtx[i] =
 
 ```cpp
 CvQuadEdge2D* outer_qedges[3];
+
 for( i = 0; i < 3; i++ ) {
-outer_qedges[i] =
-(CvQuadEdge2D*)cvGetSeqElem( (CvSeq*)(my_subdiv->edges), I );
+	outer_qedges[i] = (CvQuadEdge2D*)cvGetSeqElem( (CvSeq*)(my_subdiv->edges), I );
 }
 ```
 
@@ -306,28 +309,31 @@ outer_qedges[i] =
 
 ```cpp
 void locate_point(
- CvSubdiv2D* subdiv
-,CvPoint2D32f fp
-,IplImage* img
-,CvScalar active_color
+	 CvSubdiv2D* subdiv
+	,CvPoint2D32f fp
+	,IplImage* img
+	,CvScalar active_color
 ) {
-CvSubdiv2DEdge e;
-CvSubdiv2DEdge e0 = 0;
-CvSubdiv2DPoint* p = 0;
-cvSubdiv2DLocate( subdiv, fp, &e0, &p );
-if( e0 ) {
-e = e0;
+	CvSubdiv2DEdge 		e;
+	CvSubdiv2DEdge 		e0 	= 0;
+	CvSubdiv2DPoint* 	p 	= 0;
 
-// Всегда 3 ребра – это ведь триангуляция.
-//
-do {
-// [Вставте свой код сюда]
-//
-// Сделать что-то с e …
-e = cvSubdiv2DGetEdge(e,CV_NEXT_AROUND_LEFT);
-}
-while( e != e0 );
-}
+	cvSubdiv2DLocate( subdiv, fp, &e0, &p );
+
+	if( e0 ) {
+		e = e0;
+
+		// Всегда 3 ребра – это ведь триангуляция.
+		//
+		do {
+
+		// [Вставте свой код сюда]
+		//
+		// Сделать что-то с e …
+		e = cvSubdiv2DGetEdge(e,CV_NEXT_AROUND_LEFT);
+		}
+		while( e != e0 );
+	}
 }
 ```
 
@@ -335,8 +341,8 @@ while( e != e0 );
 
 ```cpp
 CvSubdiv2DPoint* cvFindNearestPoint2D(
- CvSubdiv2D* subdiv
-,CvPoint2D32f pt
+	 CvSubdiv2D* subdiv
+	,CvPoint2D32f pt
 );
 ```
 
@@ -346,42 +352,63 @@ CvSubdiv2DPoint* cvFindNearestPoint2D(
 
 ```cpp
 void draw_subdiv_facet(
-IplImage *img,
-CvSubdiv2DEdge edge
+	 IplImage *img
+	,CvSubdiv2DEdge edge
 ) {
-CvSubdiv2DEdge t = edge;
-int i, count = 0;
-CvPoint* buf = 0;
+	CvSubdiv2DEdge t = edge;
+	int i, count = 0;
+	CvPoint* buf = 0;
 
-// Подсчет количества ребер на грани
-do{
-count++;
-t = cvSubdiv2DGetEdge( t, CV_NEXT_AROUND_LEFT );
-} while (t != edge );
+	// Подсчет количества ребер на грани
+	// 
+	do{
+		count++;
+		t = cvSubdiv2DGetEdge( t, CV_NEXT_AROUND_LEFT );
+	} while (t != edge );
 
-// Сбор точек
-//
-buf = (CvPoint*)malloc( count * sizeof(buf[0]))
-t = edge;
-for( i = 0; i < count; i++ ) {
-CvSubdiv2DPoint* pt = cvSubdiv2DEdgeOrg( t );
-if( !pt ) break;
-buf[i] = cvPoint( cvRound(pt->pt.x), cvRound(pt->pt.y));
-t = cvSubdiv2DGetEdge( t, CV_NEXT_AROUND_LEFT );
-}
+	// Сбор точек
+	// 
+	buf = (CvPoint*)malloc( count * sizeof(buf[0]));
+	t = edge;
+	for( i = 0; i < count; i++ ) {
+		CvSubdiv2DPoint* pt = cvSubdiv2DEdgeOrg( t );
+		if( !pt ) break;
+		buf[i] = cvPoint( cvRound(pt->pt.x), cvRound(pt->pt.y) );
+		t = cvSubdiv2DGetEdge( t, CV_NEXT_AROUND_LEFT );
+	}
 
-// Обход
-//
-if( i == count ){
-CvSubdiv2DPoint* pt = cvSubdiv2DEdgeDst(
-cvSubdiv2DRotateEdge( edge, 1 ));
-cvFillConvexPoly( img, buf, count,
-CV_RGB(rand()&255,rand()&255,rand()&255), CV_AA, 0 );
-cvPolyLine( img, &buf, &count, 1, 1, CV_RGB(0,0,0),
-1, CV_AA, 0);
-draw_subdiv_point( img, pt->pt, CV_RGB(0,0,0));
-}
-free( buf );
+	// Обход
+	//
+	if( i == count ){
+		CvSubdiv2DPoint* pt = cvSubdiv2DEdgeDst(
+								cvSubdiv2DRotateEdge( edge, 1 )
+							);
+
+		cvFillConvexPoly( 
+							 img
+							,buf 
+							,count
+							,CV_RGB(rand()&255,rand()&255,rand()&255)
+							,CV_AA
+							,0
+						);
+
+		cvPolyLine(
+					 img
+					,&buf
+					,&count
+					,1
+					,1
+					,CV_RGB(0,0,0)
+					,1
+					,CV_AA
+					,0
+				  );
+
+		draw_subdiv_point( img, pt->pt, CV_RGB(0,0,0) );
+	}
+
+	free( buf );
 }
 ```
 
@@ -389,45 +416,45 @@ free( buf );
 
 ```cpp
 void visit_edges( CvSubdiv2D* subdiv){
-CvSeqReader reader; // Последовательность reader
-int i, total = subdiv->edges->total; // Количество ребер
-int elem_size = subdiv->edges->elem_size; // размер ребра
+	CvSeqReader reader; 						// Последовательность reader
+	int i, total = subdiv->edges->total; 		// Количество ребер
+	int elem_size = subdiv->edges->elem_size; 	// Размер ребра
 
-cvStartReadSeq( (CvSeq*)(subdiv->edges), &reader, 0 );
+	cvStartReadSeq( (CvSeq*)(subdiv->edges), &reader, 0 );
 
-cvCalcSubdivVoronoi2D( subdiv ); // убедиться, что существует
+	cvCalcSubdivVoronoi2D( subdiv ); // Проверка существования
 
-for( i = 0; i < total; i++ ) {
+	for( i = 0; i < total; i++ ) {
 
-CvQuadEdge2D* edge = (CvQuadEdge2D*)(reader.ptr);
+		CvQuadEdge2D* edge = (CvQuadEdge2D*)(reader.ptr);
 
-if( CV_IS_SET_ELEM( edge )) {
-// Что-то сделать с ребрами Delaunay и Voronoi
-//
-CvSubdiv2DEdge voronoi_edge = (CvSubdiv2DEdge)edge + 1;
-CvSubdiv2DEdge delaunay_edge = (CvSubdiv2DEdge)edge;
+		if( CV_IS_SET_ELEM( edge )) {
+			// Что-то сделать с ребрами Delaunay и Voronoi
+			//
+			CvSubdiv2DEdge voronoi_edge = (CvSubdiv2DEdge)edge + 1;
+			CvSubdiv2DEdge delaunay_edge = (CvSubdiv2DEdge)edge;
 
-// … или сосредоточиться только на Voronoi
+			// … или сосредоточиться только на Voronoi
 
-// левое
-//
-voronoi_edge = cvSubdiv2DRotateEdge( edge, 1 );
+			// левое
+			//
+			voronoi_edge = cvSubdiv2DRotateEdge( edge, 1 );
 
-// правое
-//
-voronoi_edge = cvSubdiv2DRotateEdge( edge, 3 );
-}
-CV_NEXT_SEQ_ELEM( elem_size, reader );
-}
+			// правое
+			//
+			voronoi_edge = cvSubdiv2DRotateEdge( edge, 3 );
+		}
+		CV_NEXT_SEQ_ELEM( elem_size, reader );
+	}
 }
 ```
 
-И в заключение: выполнив поиск вершин, можно найти площадь треугольника
+И в заключение: выполнив поиск трех вершин, можно найти площадь треугольника
 
 ```cpp
 double cvTriangleArea(
-CvPoint2D32f a,
-CvPoint2D32f b,
-CvPoint2D32f c
+	 CvPoint2D32f a
+	,CvPoint2D32f b
+	,CvPoint2D32f c
 )
 ```
