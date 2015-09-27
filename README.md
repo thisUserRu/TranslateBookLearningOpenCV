@@ -44,7 +44,7 @@
     * AlexSys, Roman
     * AlexSys
     * -
-* **Контуры **
+* **Контуры**
     * [П]|[РС]|(РП) 
     * AlexSys, Roman
     * AlexSys
