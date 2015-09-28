@@ -91,7 +91,7 @@
    * [Упражнения](Chapter9/Exercises.md)
 * [Слежение и движение](Chapter10/TrackingAndMotion.md)
    * [Основы слежения](Chapter10/TheBasicsOfTracking.md)
-   * [(!) Угловой поиск](Chapter10/CornerFinding.md)
+   * [Поиск углов](Chapter10/CornerFinding.md)
    * [(!) Сабпиксельные уголки](Chapter10/SubpixelCorners.md)
    * [Инвариантные характеристики](Chapter10/InvariantFeatures.md)
    * [Оптические потоки](Chapter10/OpticalFlow.md)
