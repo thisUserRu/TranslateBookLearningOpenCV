@@ -89,7 +89,7 @@
    * [Mean-Shift сегментация](Chapter9/MeanShiftSegmentation.md)
    * [Триангуляция Delaunay, тесселяция Voronoi](Chapter9/DelaunayTriangulationVoronoiTesselation.md)
    * [Упражнения](Chapter9/Exercises.md)
-* [Слежение и движение](Chapter10/TrackingAndMotion.md)
+* [Слежение и движение](Chapter10/TheBasicsOfTracking.md)
    * [Основы слежения](Chapter10/TheBasicsOfTracking.md)
    * [Поиск углов](Chapter10/CornerFinding.md)
    * [(!) Сабпиксельные уголки](Chapter10/SubpixelCorners.md)
