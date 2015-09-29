@@ -92,7 +92,7 @@
 * [Слежение и движение](Chapter10/TheBasicsOfTracking.md)
    * [Основы слежения](Chapter10/TheBasicsOfTracking.md)
    * [Поиск углов](Chapter10/CornerFinding.md)
-   * [(!) Сабпиксельные уголки](Chapter10/SubpixelCorners.md)
+   * [Углы субпикселя](Chapter10/SubpixelCorners.md)
    * [Инвариантные характеристики](Chapter10/InvariantFeatures.md)
    * [Оптические потоки](Chapter10/OpticalFlow.md)
    * [Mean-Shift и Camshift слежение](Chapter10/MeanShiftAndCamshiftTracking.md)
