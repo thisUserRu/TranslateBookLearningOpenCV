@@ -120,3 +120,26 @@ void cvCalcOpticalFlowLK(
 
 **Пирамидальный оптический поток Lucas-Kanade**
 
+Функция *cvCalcOpticalFlowPyrLK()* используется для реализации алгоритма пирамидального оптического потока Lucas-Kanade. Как будет показано далее, данная функция использует "хорошие особенности для отслеживания", а также возвращает показания того, насколько хорошо происходит слежение. 
+
+```cpp
+void cvCalcOpticalFlowPyrLK(
+ const CvArr* imgA
+,const CvArr* imgB
+,CvArr* pyrA
+,CvArr* pyrB
+,CvPoint2D32f* featuresA
+,CvPoint2D32f* featuresB
+,int count
+,CvSize winSize
+,int level
+,char* status
+,float* track_error
+,CvTermCriteria criteria
+,int flags
+);
+```
+
+Эта функция имеет большой набор входных параметров. Теперь имея определение функции, можно перейти к проблеме того, какие точки необходимо отслеживать и как вычислять.
+
+Первых два аргумента – это исходное и конечное изображение; оба одноканальные, 8-битные изображения.
