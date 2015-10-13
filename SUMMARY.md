@@ -98,7 +98,7 @@
    * [Mean-Shift и Camshift слежение](Chapter10/MeanShiftAndCamshiftTracking.md)
    * [Шаблоны движения](Chapter10/MotionTemplates.md)
    * [Оценочная функция](Chapter10/Estimators.md)
-   * [(!) Алгоритм Condensation](Chapter10/TheCondensationAlgorithm.md)
+   * [Алгоритм условно плотного распространения](Chapter10/TheCondensationAlgorithm.md)
    * [Упражнения](Chapter10/Exercises.md)
 * [Модели камер и их калибровка](Chapter11/CameraModelsAndCalibration.md)
    * [Модели камер](Chapter11/CameraModel.md)
