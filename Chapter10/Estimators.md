@@ -166,64 +166,67 @@
 На основе всего ранее представленного может сложиться мнение о том, что для выполнения подобного рода задач OpenCV и не нужно или, наоборот, без OpenCV будет невозможно справиться. К счастью, OpenCV поддается любой интерпретации. OpenCV предоставляет четыре функции, которые непосредственно связаны с работой фильтра Kalman:
 
 ```cpp
-cvCreateKalman(
- int nDynamParams
-,int nMeasureParams
-,int nControlParams
-);
+	cvCreateKalman(
+		 int 	nDynamParams
+		,int 	nMeasureParams
+		,int 	nControlParams
+	);
 
-cvReleaseKalman(
- CvKalman** kalman
-);
+	cvReleaseKalman(
+	 	CvKalman** 	kalman
+	);
 ```
 
 Первая функция создает и возвращает указатель на структуру типа *CvKalman*, вторая функция удаляет эту структуру.
 
 ```cpp
-typedef struct CvKalman {
-int MP; // измерение векторного пространства
-int DP; // состояние векторного пространства
-int CP; // управление векторного пространства
-CvMat* state_pre; // Экстраполяция (предсказание) вектора состояния:
-// x_k = F x_k-1 + B u_k
-CvMat* state_post; // корреляция вектора состояния:
-// x_k = x_k’ + K_k (z_k’- H x_k’)
-CvMat* transition_matrix; // стохастической матрица состояния
-// F
-CvMat* control_matrix; // матрица управления
-// B
-// (не использовать, если нет контроля)
-CvMat* measurement_matrix; // матрица наблюдений
-// H
-CvMat* process_noise_cov; // ковариационная матрица случайного процесса
-// Q
-CvMat* measurement_noise_cov; // ковариационная матрица шума измерений
-// R
-CvMat* error_cov_pre; // ковариационная матрица экстраполированного вектора состояния:
-// (P_k’=F P_k-1 Ft) + Q
-CvMat* gain; // Оптимальная по Kalman матрица коэффициентов усиления:
-// K_k = P_k’ H^T (H P_k’ H^T + R)^-1
-CvMat* error_cov_post; // ковариационная матрица оценки вектора состояния системы
-// P_k = (I - K_k H) P_k’
-CvMat* temp1; // временные матрицы
-CvMat* temp2;
-CvMat* temp3;
-CvMat* temp4;
-CvMat* temp5;
-} CvKalman;
+	typedef struct CvKalman {
+		int MP; 	// измерение векторного пространства
+		int DP; 	// состояние векторного пространства
+		int CP; 	// управление векторного пространства
+		CvMat* state_pre; 				// Экстраполяция (предсказание) вектора состояния:
+										// x_k = F x_k-1 + B u_k
+		CvMat* state_post; 				// корреляция вектора состояния:
+										// x_k = x_k’ + K_k (z_k’- H x_k’)
+		CvMat* transition_matrix; 		// стохастической матрица состояния
+										// F
+		CvMat* control_matrix; 			// матрица управления
+										// B
+										// (не использовать, если нет управления)
+		CvMat* measurement_matrix; 		// матрица наблюдений
+										// H
+		CvMat* process_noise_cov; 		// ковариационная матрица случайного процесса
+										// Q
+		CvMat* measurement_noise_cov; 	// ковариационная матрица шума измерений
+										// R
+		CvMat* error_cov_pre; 			// ковариационная матрица экстраполированного
+										// вектора состояния:
+										// (P_k’=F P_k-1 Ft) + Q
+		CvMat* gain; 					// Оптимальная по Kalman матрица коэффициентов 
+										// усиления:
+										// K_k = P_k’ H^T (H P_k’ H^T + R)^-1
+		CvMat* error_cov_post; 			// ковариационная матрица оценки вектора 
+										// состояния системы
+										// P_k = (I - K_k H) P_k’
+		CvMat* temp1; // временные матрицы
+		CvMat* temp2;
+		CvMat* temp3;
+		CvMat* temp4;
+		CvMat* temp5;
+	} CvKalman;
 ```
 
 Следующие две функции реализуют сам фильтр Kalman. После заполнения структуры данными, можно вычислить вектор состояния на следующем временном шаге за счет вызова *cvKalmanCorrect()* с последующей интеграцией новых измерений за счет вызова *cvKalmanCorrect()*. Результат вызова *cvKalmanCorrect()* размещается в *state_post*, а результат вызова *cvKalmanPredict()* в *state_pre*.
 
 ```cpp
-cvKalmanPredict(
- CvKalman* kalman
-,const CvMat* control = NULL
-);
+	cvKalmanPredict(
+		 CvKalman* 		kalman
+		,const CvMat* 	control = NULL
+	);
 
-cvKalmanCorrect(
- CvKalman* kalman
-,CvMat* measured
+	cvKalmanCorrect(
+		 CvKalman* 	kalman
+		,CvMat* 	measured
 );
 ```
 
@@ -242,20 +245,20 @@ cvKalmanCorrect(
 ```cpp
 // Использование фильтра Kalman для моделирования частицы с круговой траекторией
 //
-#include “cv.h”
-#include “highgui.h”
-#include “cvx_defs.h”
+#include "cv.h"
+#include "highgui.h"
+#include "cvx_defs.h"
 
 #define phi2xy(mat) /
-cvPoint( cvRound(img->width/2 + img->width/3*cos(mat->data.fl[0])), /
-cvRound( img->height/2 - img->width/3*sin(mat->data.fl[0])) )
+	cvPoint( cvRound(img->width/2 + img->width/3*cos(mat->data.fl[0])), /
+	cvRound( img->height/2 - img->width/3*sin(mat->data.fl[0])) )
 
 int main(int argc, char** argv) {
 
-// Инициализация, создание объекта и окна под фильтр Kalman,  
-// генератора случайных чисел
-//
-cvNamedWindow( “Kalman”, 1 );
+	// Инициализация, создание объекта и окна под фильтр Kalman,  
+	// генератора случайных чисел
+	//
+	cvNamedWindow( "Kalman", 1 );
 ... продолжение далее
 ```
 
@@ -263,11 +266,11 @@ cvNamedWindow( “Kalman”, 1 );
 
 ```cpp
 ... продолжение ранее
-CvRandState rng;
-cvRandInit( &rng, 0, 1, -1, CV_RAND_UNI );
+	CvRandState rng;
+	cvRandInit( &rng, 0, 1, -1, CV_RAND_UNI );
 
-IplImage* img = cvCreateImage( cvSize(500,500), 8, 3 );
-CvKalman* kalman = cvCreateKalman( 2, 1, 0 );
+	IplImage* img = cvCreateImage( cvSize(500,500), 8, 3 );
+	CvKalman* kalman = cvCreateKalman( 2, 1, 0 );
 ... продолжение далее
 ````
 
@@ -277,28 +280,28 @@ CvKalman* kalman = cvCreateKalman( 2, 1, 0 );
 
 ```cpp
 ... продолжение ранее
-// состояние (phi, delta_phi) – угол и угловая скорость
-// Инициализация случайными значениями
-//
-CvMat* x_k = cvCreateMat( 2, 1, CV_32FC1 );
-cvRandSetRange( &rng, 0, 0.1, 0 );
-rng.disttype = CV_RAND_NORMAL;
-cvRand( &rng, x_k );
+	// состояние (phi, delta_phi) – угол и угловая скорость
+	// Инициализация случайными значениями
+	//
+	CvMat* x_k = cvCreateMat( 2, 1, CV_32FC1 );
+	cvRandSetRange( &rng, 0, 0.1, 0 );
+	rng.disttype = CV_RAND_NORMAL;
+	cvRand( &rng, x_k );
 
-// матрица нормального случайного процесса
-//
-CvMat* w_k = cvCreateMat( 2, 1, CV_32FC1 );
+	// матрица нормального случайного процесса
+	//
+	CvMat* w_k = cvCreateMat( 2, 1, CV_32FC1 );
 
-// измерения, только один параметр для угла
-//
-CvMat* z_k = cvCreateMat( 1, 1, CV_32FC1 );
-cvZero( z_k );
+	// измерения, только один параметр для угла
+	//
+	CvMat* z_k = cvCreateMat( 1, 1, CV_32FC1 );
+	cvZero( z_k );
 
-// Стохастическая матрица состояния ‘F’ связывает параметры модели 
-// в момент времени k и в момент времени k + 1
-//
-const float F[] = { 1, 1, 0, 1 };
-memcpy( kalman->transition_matrix->data.fl, F, sizeof(F));
+	// Стохастическая матрица состояния ‘F’ связывает параметры модели 
+	// в момент времени k и в момент времени k + 1
+	//
+	const float F[] = { 1, 1, 0, 1 };
+	memcpy( kalman->transition_matrix->data.fl, F, sizeof(F) );
 ... продолжение далее
 ```
 
@@ -308,17 +311,17 @@ memcpy( kalman->transition_matrix->data.fl, F, sizeof(F));
 
 ```cpp
 ... продолжение ранее
-// Инициализация других параметров фильтра Kalman
-//
-cvSetIdentity( kalman->measurement_matrix, cvRealScalar(1) );
-cvSetIdentity( kalman->process_noise_cov, cvRealScalar(1e-5) );
-cvSetIdentity( kalman->measurement_noise_cov, cvRealScalar(1e-1) );
-cvSetIdentity( kalman->error_cov_post, cvRealScalar(1));
+	// Инициализация других параметров фильтра Kalman
+	//
+	cvSetIdentity( kalman->measurement_matrix, 		cvRealScalar(1) );
+	cvSetIdentity( kalman->process_noise_cov, 		cvRealScalar(1e-5) );
+	cvSetIdentity( kalman->measurement_noise_cov, 	cvRealScalar(1e-1) );
+	cvSetIdentity( kalman->error_cov_post, 			cvRealScalar(1) );
 
-// случайный выбор начального состояния
-//
-cvRand( &rng, kalman->state_post );
-while( 1 ) {
+	// случайный выбор начального состояния
+	//
+	cvRand( &rng, kalman->state_post );
+	while( 1 ) {
 ... продолжение далее
 ```
 
@@ -327,18 +330,18 @@ while( 1 ) {
 ```cpp
 . . . продолжение ранее
 // предсказанное положение точки
-const CvMat* y_k = cvKalmanPredict( kalman, 0 );
+		const CvMat* y_k = cvKalmanPredict( kalman, 0 );
 
-// генерация измерения (z_k)
-//
-cvRandSetRange(
- &rng
-,0
-,sqrt(kalman->measurement_noise_cov->data.fl[0])
-,0
-);
-cvRand( &rng, z_k );
-cvMatMulAdd( kalman->measurement_matrix, x_k, z_k, z_k );
+		// генерация измерения (z_k)
+		//
+		cvRandSetRange(
+			 &rng
+			,0
+			,sqrt(kalman->measurement_noise_cov->data.fl[0])
+			,0
+		);
+		cvRand( &rng, z_k );
+		cvMatMulAdd( kalman->measurement_matrix, x_k, z_k, z_k );
 ... продолжение далее
 ```
 
@@ -348,11 +351,11 @@ cvMatMulAdd( kalman->measurement_matrix, x_k, z_k, z_k );
 ... продолжение ранее
 // рисование точек (eg convert to planar coordinates and draw)
 //
-cvZero( img );
-cvCircle( img, phi2xy(z_k), 4, CVX_YELLOW ); // наблюдаемое состояние
-cvCircle( img, phi2xy(y_k), 4, CVX_WHITE, 2 ); // “предсказанное” состояние
-cvCircle( img, phi2xy(x_k), 4, CVX_RED ); // реальное состояние
-cvShowImage( “Kalman”, img );
+		cvZero( img );
+		cvCircle( img, phi2xy(z_k), 4, CVX_YELLOW ); 	// наблюдаемое состояние
+		cvCircle( img, phi2xy(y_k), 4, CVX_WHITE, 2 ); 	// "предсказанное"" состояние
+		cvCircle( img, phi2xy(x_k), 4, CVX_RED ); 		// реальное состояние
+		cvShowImage( "Kalman", img );
 ... продолжение далее
 ```
 
@@ -362,25 +365,25 @@ cvShowImage( “Kalman”, img );
 . . . продолжение ранее
 // Регулирование состояния фильтра Kalman
 //
-cvKalmanCorrect( kalman, z_k );
+		cvKalmanCorrect( kalman, z_k );
 
-// Применение стохастическая матрица состояния ‘F’
-// матрицы случайного процесса w_k.
-//
-cvRandSetRange(
- &rng
-,0
-,sqrt(kalman->process_noise_cov->data.fl[0])
-,0
-);
-cvRand( &rng, w_k );
-cvMatMulAdd( kalman->transition_matrix, x_k, w_k, x_k );
+		// Применение стохастическая матрица состояния 'F'
+		// матрицы случайного процесса w_k.
+		//
+		cvRandSetRange(
+			 &rng
+			,0
+			,sqrt(kalman->process_noise_cov->data.fl[0])
+			,0
+		);
+		cvRand( &rng, w_k );
+		cvMatMulAdd( kalman->transition_matrix, x_k, w_k, x_k );
 
-// выход, если нажата клавиша ‘Esc’
-if( cvWaitKey( 100 ) == 27 ) break;
-}
+		// выход, если нажата клавиша 'Esc'
+		if( cvWaitKey( 100 ) == 27 ) break;
+	}
 
-return 0;
+	return 0;
 }
 ```
 
@@ -396,5 +399,10 @@ return 0;
 
 ### Немного о расширенном фильтре Kalman
 
-Динамичная линейная система, состоящая только из основополагающих параметров, дольно таки ограничена. В дальнейшем, при рассмотрении динамичной нелинейной системы, фильтр Kalman будет полезен.
+Динамика линейной системы, состоящая только из основных параметров, дольно таки ограничена. Однако, как будет показано далее, при рассмотрении динамики нелинейной системы, фильтр Kalman будет полезен.
 
+Термин "линейный" означает, что отдельно взятые шаги в определении фильтра Kalman могут быть представлены матрицами. Но когда эти шаги не могут быть представлены матрицами? На самом деле для этого есть множество возможностей. Например, мера управления является суммой, а педаль газа машины является дисперсией: тогда связь между скоростью автомобиля и педалью газа не является линейной. Другой более распространенной проблемой является величина силы автомобиля, которая более естественно выражается в декартовых координатах, в то время как движение автомобиля более естественно выражается в полярных координатах. Данная проблема могла бы возникнуть, если бы вместо машины была бы лодка, движущаяся по кругу в строго определенном направлении в едином потоке воды. 
+
+Во всез этих случаях, использование только фильтра Kalman будет недостаточо. Одним из способов справиться с этими нелинейностями (или по крайней мере попытка их обработать) заключается в линеризации соответствующих процессов (например, обновление *F* или управление входным откликом *B*). Таким образом, потребуется вычислять новые значения *F* и *B* на каждом временном шаге на основе состояния *x*. Эти значения лишь приблизительно реальные обновления, а функции управления работают в непосредственной близости от конкретного знаяения *x*; на практике этого зачастую бывает вполне достаточно. Данные дополнения формируют *расширенный фильтр Kalman*.
+
+В OpenCV нет специально зарезервированных функций под расширенный фильтр Kalman, но они в действительности и не нужны. Все что необходимо сделать, так это повторно вычислять и сбрасывать значения *kalman->update_matrix* и *kalman->control_matrix* после каждого обновления. Благодаря этому элегантному расширению фильтра Kalman, которое именуется *сигма-точечным фильтром Kalman*, позволяет охватить нелинейные системы.
