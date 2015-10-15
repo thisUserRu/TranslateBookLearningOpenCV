@@ -101,7 +101,7 @@
    * [Алгоритм условно плотного распространения](Chapter10/TheCondensationAlgorithm.md)
    * [Упражнения](Chapter10/Exercises.md)
 * [Модели камер и их калибровка](Chapter11/CameraModelsAndCalibration.md)
-   * [Модели камер](Chapter11/CameraModel.md)
+   * [Модель камеры](Chapter11/CameraModel.md)
    * [Калибровка](Chapter11/Calibration.md)
    * [(!) Искажения](Chapter11/Undistortion.md)
    * [(!) Совместная калибровка](Chapter11/PuttingCalibrationAllTogether.md)
