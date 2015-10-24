@@ -104,7 +104,7 @@
    * [Модель камеры](Chapter11/CameraModel.md)
    * [Калибровка](Chapter11/Calibration.md)
    * [Удаление искажений](Chapter11/Undistortion.md)
-   * [(!) Совместная калибровка](Chapter11/PuttingCalibrationAllTogether.md)
+   * [Пример реализации калибровки](Chapter11/PuttingCalibrationAllTogether.md)
    * [(!) Преобразования Rodrigues](Chapter11/RodriguesTransform.md)
    * [Упражнения](Chapter11/Exercises.md)
 * [Проекция и 3D Vision](Chapter12/ProjectionAnd3DVision.md)
