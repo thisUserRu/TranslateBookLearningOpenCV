@@ -105,7 +105,7 @@
    * [Калибровка](Chapter11/Calibration.md)
    * [Удаление искажений](Chapter11/Undistortion.md)
    * [Пример реализации калибровки](Chapter11/PuttingCalibrationAllTogether.md)
-   * [(!) Преобразования Rodrigues](Chapter11/RodriguesTransform.md)
+   * [Преобразования Rodrigues](Chapter11/RodriguesTransform.md)
    * [Упражнения](Chapter11/Exercises.md)
 * [Проекция и 3D Vision](Chapter12/ProjectionAnd3DVision.md)
    * [Проекции](Chapter12/Projections.md)
