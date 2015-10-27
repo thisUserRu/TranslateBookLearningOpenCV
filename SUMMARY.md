@@ -110,7 +110,7 @@
 * [Проекция и 3D Vision](Chapter12/ProjectionAnd3DVision.md)
    * [Проекции](Chapter12/Projections.md)
    * [Аффинные и перспективные преобразования](Chapter12/AffineAndPerspectiveTransformations.md)
-   * [POSIT: оценивание 3D позы](Chapter12/POSIT3DPoseEstimation.md)
+   * [POSIT: оценивание трехмерного представления](Chapter12/POSIT3DPoseEstimation.md)
    * [Стереосъемка](Chapter12/StereoImaging.md)
    * [Структура движения](Chapter12/StructureFromMotion.md)
    * [Установка линий в 2-ух и 3-х мерных измерениях](Chapter12/FittingLinesInTwoAndThreeDimensions.md)
