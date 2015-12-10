@@ -115,7 +115,7 @@
    * [Структура движения](Chapter12/StructureFromMotion.md)
    * [Установка линий в 2-ух и 3-х мерных измерениях](Chapter12/FittingLinesInTwoAndThreeDimensions.md)
    * [Упражнения](Chapter12/Exercises.md)
-* [Машинное обучение](Chapter13/MachineLearning.md)
+* [Машинное обучение](Chapter13/WhatIsMachineLearning.md)
    * [Что такое машинное обучение](Chapter13/WhatIsMachineLearning.md)
    * [Общие подпрограммы в ML Library](Chapter13/CommonRoutinesInTheMLLibrary.md)
    * [Расстояние Mahalanobis](Chapter13/MahalanobisDistance.md)
