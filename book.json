@@ -1,5 +1,10 @@
 {
     "title": "Learning OpenCV",
     "description": "Перевод книги Learning OpenCV",
-    "author": "AlexSys"
+    "author": "AlexSys",
+    "plugins": ["styles-less"],
+    "styles": {
+        "pdf": "./styles/pdf.less"
+    
+    }
 }
