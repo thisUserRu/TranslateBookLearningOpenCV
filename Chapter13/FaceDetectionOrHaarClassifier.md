@@ -75,10 +75,17 @@ Viola и Jones организовали каждую группу boost клас
 //   CvMemStorage* storage = cvCreateMemStorage(0);
 //
 void detect_and_draw( IplImage* img, Double scale = 1.3 ) {
-	static CvScalar colors[] = {
-	    {{0,0,255}}, {{0,128,255}}, {{0,255,255}}, {{0,255,0}},
-	    {{255,128,0}}, {{255,255,0}}, {{255,0,0}}, {{255,0,255}}
-	};
+	static CvScalar colors[] = 
+    {
+        {{0,0,255}},
+        {{0,128,255}},
+        {{0,255,255}},
+        {{0,255,0}},
+        {{255,128,0}},
+        {{255,255,0}},
+        {{255,0,0}},
+        {{255,0,255}}
+    };
 	
 	// IMAGE PREPARATION:
 	//
