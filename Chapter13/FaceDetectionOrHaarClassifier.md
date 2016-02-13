@@ -75,8 +75,8 @@ Viola и Jones организовали каждую группу boost клас
 //   CvMemStorage* storage = cvCreateMemStorage(0);
 //
 void detect_and_draw( IplImage* img, Double scale = 1.3 ) {
-    // Unknown error buil gitbook
-    // Replace ( to {{ and ) to }}
+    // Unknown error build gitbook
+    // Заменить ( на две { и ) на две }
     // 
 	// static CvScalar colors[] = {
     //    (0,0,255), (0,128,255), (0,255,255), (0,255,0),
