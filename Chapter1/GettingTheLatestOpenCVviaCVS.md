@@ -6,12 +6,18 @@ OpenCV активно развивается и ошибки довольно т
 
 Для получения последней версии OpenCV из репозитория CVS, необходимо получить доступ к каталогу CVSROOT:
 
-	:pserver:anonymous@opencvlibrary.cvs.sourceforge.net:2401/cvsroot/opencvlibrary
+```
+:pserver:anonymous@opencvlibrary.cvs.sourceforge.net:2401/cvsroot/opencvlibrary
+```
 
 Для пользователей Linux необходимо ввести две команды:
 
-	cvs -d:pserver:anonymous@opencvlibrary.cvs.sourceforge.net:/cvsroot/opencvlibrarylogin
-	
+```sh
+cvs -d:pserver:anonymous@opencvlibrary.cvs.sourceforge.net:/cvsroot/opencvlibrarylogin
+```
+
 Когда программа запросит пароль, нажмите возврат. Затем используйте следующее:
 
-	cvs -z3 -d:pserver:anonymous@opencvlibrary.cvs.sourceforge.net:/cvsroot/opencvlibraryco -P opencv
+```sh
+cvs -z3 -d:pserver:anonymous@opencvlibrary.cvs.sourceforge.net:/cvsroot/opencvlibraryco -P opencv
+```
