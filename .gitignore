@@ -17,3 +17,6 @@ _book
 
 # .sh files
 *.sh
+
+# other file
+*~
