@@ -28,8 +28,8 @@ assert( capture != NULL );	// Проверка успешного захвата
 Пример 2-10. Простой пример вывода изображения, получаемого с камеры
 
 ```cpp
-#include “highgui.h”
-#include “cv.h”
+#include <highgui.h>
+#include <cv.h>
 
 int main() {
     CvCapture *capture = cvCreateCameraCapture(0); // Захват изображения с камеры

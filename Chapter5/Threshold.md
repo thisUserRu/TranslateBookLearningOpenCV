@@ -3,18 +3,18 @@
 Зачастую после обработки изображения, возникает потребность, чтобы в конечном изображение остались только те пиксели, которые выше или ниже определенного значения. В OpenCV для решения данной проблемы существует функция *cvThreshold()*. Основная идея алгоритма, заложенного в функцию, заключается в том, чтобы в конечный массив попали только те пиксели, которые выше или ниже определенного значения. 
 
 ```cpp
-	double cvThreshold(
-		 CvArr* 	src
-		,CvArr* 	dst
-		,double 	threshold
-		,double 	max_value
-		,int 		threshold_type
-	);
+double cvThreshold(
+     CvArr* src
+    ,CvArr* dst
+    ,double threshold
+    ,double max_value
+    ,int    threshold_type
+);
 ```
 
 Как показано в таблице 5-5 каждому типу порога соответствует своя операция сравнения между *i*-ым пикселем исходного изображения (![Формула 5-11 не найдена](Images/Frml_5_11.jpg)) и порогом (обозначен как *T*). В зависимости от соотношения между значением пикселя на исходном изображении и значением порога, значение пикселя на конечном изображении ![Формула 5-12 не найдена](Images/Frml_5_12.jpg) может быть установлено в 0, ![Формула 5-11 не найдена](Images/Frml_5_11.jpg) или *max_value* (обозначено как *M*). 
 
-Таблица 5-5. Значения threshold_type функции cvThreshold()
+Таблица 5-5. Значения *threshold_type* функции *cvThreshold()*
 
 | Тип порога | Операция |
 | -- | -- |
@@ -24,7 +24,7 @@
 | CV_THRESH_TOZERO_INV | ![Формула 5-12 не найдена](Images/Frml_5_12.jpg) = ( ![Формула 5-11 не найдена](Images/Frml_5_11.jpg) > T ) ? 0:![Формула 5-11 не найдена](Images/Frml_5_11.jpg) |
 | CV_THRESH_TOZERO | ![Формула 5-12 не найдена](Images/Frml_5_12.jpg) = ( ![Формула 5-11 не найдена](Images/Frml_5_11.jpg) > T ) ? ![Формула 5-11 не найдена](Images/Frml_5_11.jpg) :0 |
 
-Рисунок 5-23 должна прояснить последствия каждого из типов преобразования.
+Рисунок 5-23 должен прояснить последствия каждого из типов преобразования.
 
 ![Рисунок 5-23 не найден](Images/Pic_5_23.jpg)
 
@@ -32,92 +32,106 @@
 
 Рассмотрим небольшой пример (пример 5-2). В данном примере представлен процесс суммирования трех каналов исходного изображения с последующим удалением всех значений выше 100.
 
-Пример 5-2. Пример использования функции cvThreshold()
+Пример 5-2. Пример использования функции *cvThreshold()*
+
 ```cpp
 #include <stdio.h>
 #include <cv.h>
 #include <highgui.h>
  
 void sum_rgb( IplImage* src, IplImage* dst ) {
-	// Создание изображений для каждого канала
-	IplImage* r = cvCreateImage( cvGetSize(src), IPL_DEPTH_8U, 1 );
-	IplImage* g = cvCreateImage( cvGetSize(src), IPL_DEPTH_8U, 1 );
-	IplImage* b = cvCreateImage( cvGetSize(src), IPL_DEPTH_8U, 1 );
-	 
-	// "Разделение" исходного изображения на составляющие
-	cvSplit( src, r, g, b, NULL );
-	 
-	// Временное изображение
-	IplImage* s = cvCreateImage( cvGetSize(src), IPL_DEPTH_8U, 1 );
-	 
-	// Средневзвешенная сумма
-	cvAddWeighted( r, 1./3., g, 1./3., 0.0, s );
-	cvAddWeighted( s, 2./3., b, 1./3., 0.0, s );
-	 
-	// Усечение значений до 100
-	cvThreshold( s, dst, 100, 100, CV_THRESH_TRUNC );
+    // Создание изображений для каждого канала
+    // 
+    IplImage* r = cvCreateImage( cvGetSize(src), IPL_DEPTH_8U, 1 );
+    IplImage* g = cvCreateImage( cvGetSize(src), IPL_DEPTH_8U, 1 );
+    IplImage* b = cvCreateImage( cvGetSize(src), IPL_DEPTH_8U, 1 );
+     
+    // "Разделение" исходного изображения на составляющие
+    // 
+    cvSplit( src, r, g, b, NULL );
+     
+    // Временное изображение
+    // 
+    IplImage* s = cvCreateImage( cvGetSize(src), IPL_DEPTH_8U, 1 );
+     
+    // Средневзвешенная сумма
+    // 
+    cvAddWeighted( r, 1./3., g, 1./3., 0.0, s );
+    cvAddWeighted( s, 2./3., b, 1./3., 0.0, s );
+     
+    // Усечение значений до 100
+    // 
+    cvThreshold( s, dst, 100, 100, CV_THRESH_TRUNC );
 
-	cvReleaseImage( &r );
-	cvReleaseImage( &g );
-	cvReleaseImage( &b );
-	cvReleaseImage( &s );
+    cvReleaseImage( &r );
+    cvReleaseImage( &g );
+    cvReleaseImage( &b );
+    cvReleaseImage( &s );
 }
  
-int main(int argc, char** argv)
-{
-	// Создание окна
-	cvNamedWindow( argv[1], 1 );
-	 
-	// Создание исходного и конечного изображения
-	IplImage* src = cvLoadImage( argv[1] );
-	IplImage* dst = cvCreateImage( cvGetSize(src), src->depth, 1);
+int main( int argc, char** argv ) {
+    // Создание окна
+    // 
+    cvNamedWindow( argv[1], 1 );
+     
+    // Создание исходного и конечного изображения
+    // 
+    IplImage* src = cvLoadImage( argv[1] );
+    IplImage* dst = cvCreateImage( cvGetSize(src), src->depth, 1 );
 
-	// Обработка исходного изображения
-	sum_rgb( src, dst);
-	 
-	// Вывод конечного изображения на экран
-	cvShowImage( argv[1], dst );
-	 
-	// Ожидание нажатия клавиши "Esc"
-	while( 1 ) { 
-		if( (cvWaitKey( 10 )&0x7f) == 27 ) 
-			break; 
-	}
-	 
-	// Освобождение ресурсов
-	cvDestroyWindow( argv[1] );
-	cvReleaseImage( &src );
-	cvReleaseImage( &dst );
+    // Обработка исходного изображения
+    // 
+    sum_rgb( src, dst);
+     
+    // Вывод конечного изображения на экран
+    // 
+    cvShowImage( argv[1], dst );
+     
+    // Ожидание нажатия клавиши "Esc"
+    // 
+    while( 1 ) { 
+        if( (cvWaitKey( 10 )&0x7f) == 27 ) {
+            break;
+        }
+    }
+     
+    // Освобождение ресурсов
+    // 
+    cvDestroyWindow( argv[1] );
+    cvReleaseImage( &src );
+    cvReleaseImage( &dst );
 }
 ```
 
-В данном примере показано несколько довольно таки важных идей. Во-первых, к 8-битному массиву ничего не добавляется, иначе произойдет переполнение. Вместо этого используется средневзвешенное суммирование трех каналов с последующим усечением результата по насыщенности до 100. Во-вторых, функция *cvThreshold()* работает только с черно-белыми, 8-битными или вещественными изображениями. В-третьих, конечное изображение должно соответствовать исходному изображению или быть 8-битным. Кроме того, функция позволяет использовать входное изображение и как исходное и как конечное изображение. В примере в качестве промежуточного изображения использовано изображение вещественного типа для того, чтобы можно было применить код с альтернативным методом обработки (примера 5-3). Стоит обратить внимание на функцию *cvAcc()*, которая может складывать изображения целого и вещественного типа, чего в свою очередь не может делать функция *cvADD()*. 
+В данном примере показано несколько довольно таки важных идей. Во-первых, к 8-битному массиву ничего не добавляется, иначе произойдет переполнение. Вместо этого используется средневзвешенное суммирование трех каналов с последующим усечением результата по насыщенности до 100. Во-вторых, функция *cvThreshold()* работает только с черно-белыми, 8-битными или вещественными изображениями. В-третьих, конечное изображение должно соответствовать исходному изображению или быть 8-битным. Кроме того, функция позволяет использовать входное изображение и как исходное и как конечное изображение. В примере в качестве промежуточного изображения использовано изображение вещественного типа для того, чтобы можно было применить код с альтернативным методом обработки (пример 5-3). Стоит обратить внимание на функцию *cvAcc()*, которая может складывать изображения целого и вещественного типа, чего в свою очередь не может делать функция *cvADD()*. 
 
 Пример 5-3. Альтернативный метод
+
 ```cpp
-	IplImage* s = cvCreateImage(cvGetSize(src), IPL_DEPTH_32F, 1);
-	cvZero(s);
-	cvAcc(b,s);
-	cvAcc(g,s);
-	cvAcc(r,s);
-	cvThreshold( s, s, 100, 100, CV_THRESH_TRUNC );
-	cvConvertScale( s, dst, 1, 0 );
+IplImage* s = cvCreateImage(cvGetSize(src), IPL_DEPTH_32F, 1);
+cvZero(s);
+cvAcc(b,s);
+cvAcc(g,s);
+cvAcc(r,s);
+cvThreshold( s, s, 100, 100, CV_THRESH_TRUNC );
+cvConvertScale( s, dst, 1, 0 );
 ```
+
 
 ### Адаптивное пороговое преобразование
 
-Существует еще модифицированный метод порогового преобразования, при котором пороговый уровень - это переменная величина. 
+Существует еще модифицированный метод порогового преобразования, у которого пороговый уровень - это переменная величина. 
 
 ```cpp
-	void cvAdaptiveThreshold(
-		 CvArr* 	src
-		,CvArr* 	dst
-		,double 	max_val
-		,int 		adaptive_method	= CV_ADAPTIVE_THRESH_MEAN_C
-		,int 		threshold_type 	= CV_THRESH_BINARY
-		,int 		block_size 		= 3
-		,double 	param1 			= 5
-	);
+void cvAdaptiveThreshold(
+     CvArr* src
+    ,CvArr* dst
+    ,double max_val
+    ,int    adaptive_method = CV_ADAPTIVE_THRESH_MEAN_C
+    ,int    threshold_type  = CV_THRESH_BINARY
+    ,int    block_size      = 3
+    ,double param1          = 5
+);
 ```
 
 Функция реализует два варианта адаптивного порогового преобразования за счет параметра *adaptive_method*. В обоих случаях адаптивный порог *T(x, y)* устанавливает попиксельно средневзвешенное значение, вычисляемое в регионе *bxb* вокруг каждого пикселя минус константа, где *b* это аргумент *block_size*, а константа это *param1*. Если установлен метод *CV_ADAPTIVE_THRESH_MEAN_C*, тогда все пиксели области взвешиваются одинаково. Если установлен метод *CV_ADAPTIVE_THRESH_GAUSSIAN_C*, тогда пиксели в регионе вокруг *(х, y)* взвешиваются в соответствии с Гауссовой функцией их расстояния от центральной точки.
@@ -128,7 +142,9 @@ int main(int argc, char** argv)
 
 Исходный код сравнения *cvAdaptiveThreshold()* и *cvThreshold()* приведён в примере 5-4. На рисунке 5-24 показан результат работы функции с изображением, которое имеет сильную градиентную засветку. В левой нижней части рисунка показан результат использования *cvThreshold()*, а в нижней правой части показан результат адаптивного порогового преобразования с использованием функции *cvAdapriveThreshold()*. Как видно из рисунка, с помощью адаптивного порогового преобразования получилось "увидеть" всё шахматное поле, чего, в свою очередь, не было достигнуто при использовании обычного порогового преобразования. Примечание: в примере 5-4 для адаптивного преобразования были использованы следующие параметры: 
 
-	./adaptThresh 15 1 1 71 15 ../Data/cal3-L.bmp
+```
+./adaptThresh 15 1 1 71 15 ../Data/cal3-L.bmp
+```
 
 ![Рисунок 5-24 не найден](Images/Pic_5_24.jpg)
 
@@ -137,59 +153,67 @@ int main(int argc, char** argv)
 Пример 5-4. Обычное пороговое преобразование против адаптивного порогового преобразования
 
 ```cpp
-#include “cv.h”
-#include “highgui.h”
-#include “math.h”
+#include <cv.h>
+#include <highgui.h>
+#include <math.h>
  
 IplImage *Igray=0, *It = 0, *Iat;
 
 int main( int argc, char** argv ) {
 
-	if(argc != 7) {
-		return -1; 
-	}
-	 
-	// Обработка ключей командной строки
-	double threshold = (double)atof(argv[1]);
-	int threshold_type = atoi(argv[2]) ? CV_THRESH_BINARY 
-									   : CV_THRESH_BINARY_INV;
-	int adaptive_method = atoi(argv[3]) ? CV_ADAPTIVE_THRESH_MEAN_C 
-										: CV_ADAPTIVE_THRESH_GAUSSIAN_C;
-	int block_size = atoi(argv[4]);
-	double offset = (double)atof(argv[5]);
-	 
-	// Загрузка изображение в чёрно-белом формате
-	if((Igray = cvLoadImage( argv[6], CV_LOAD_IMAGE_GRAYSCALE)) == 0) {
-		return -1;
-	}
-	 
-	// Создание выходных чёрно-белых изображений
-	It = cvCreateImage(cvSize(Igray->width,Igray->height), IPL_DEPTH_8U, 1);
-	Iat = cvCreateImage(cvSize(Igray->width,Igray->height), IPL_DEPTH_8U, 1);
-	 
-	// Порог
-	cvThreshold( Igray, It,threshold, 255, threshold_type );
-	cvAdaptiveThreshold( Igray, Iat, 255, adaptive_method, threshold_type, block_size, offset );
-	 
-	// Создание окон для вывода результатов
-	cvNamedWindow("Raw", 1);
-	cvNamedWindow("Threshold", 1);
-	cvNamedWindow("Adaptive Threshold", 1);
-	 
-	// Вывод результатов
-	cvShowImage("Raw", Igray);
-	cvShowImage("Threshold", It);
-	cvShowImage("Adaptive Threshold", Iat);
-	cvWaitKey(0);
-	 
-	// Освобождение занимаемых ресурсов
-	cvReleaseImage( &Igray );
-	cvReleaseImage( &It );
-	cvReleaseImage( &Iat );
-	cvDestroyWindow( "Raw" );
-	cvDestroyWindow( "Threshold" );
-	cvDestroyWindow( "Adaptive Threshold" );
-	
-	return(0);
+    if( 7 != argc ) {
+        return -1; 
+    }
+     
+    // Обработка ключей командной строки
+    // 
+    double threshold = (double)atof(argv[1]);
+    int threshold_type = atoi(argv[2]) ? CV_THRESH_BINARY 
+                                       : CV_THRESH_BINARY_INV;
+    int adaptive_method = atoi(argv[3]) ? CV_ADAPTIVE_THRESH_MEAN_C 
+                                        : CV_ADAPTIVE_THRESH_GAUSSIAN_C;
+    int block_size = atoi(argv[4]);
+    double offset = (double)atof(argv[5]);
+     
+    // Загрузка изображения в чёрно-белом формате
+    // 
+    if((Igray = cvLoadImage( argv[6], CV_LOAD_IMAGE_GRAYSCALE)) == 0) {
+        return -1;
+    }
+     
+    // Создание выходных чёрно-белых изображений
+    // 
+    It = cvCreateImage(cvSize(Igray->width,Igray->height), IPL_DEPTH_8U, 1);
+    Iat = cvCreateImage(cvSize(Igray->width,Igray->height), IPL_DEPTH_8U, 1);
+     
+    // Пороговые преобразования
+    // 
+    cvThreshold( Igray, It,threshold, 255, threshold_type );
+    cvAdaptiveThreshold( Igray, Iat, 255, adaptive_method, threshold_type, block_size, offset );
+     
+    // Создание окон для вывода результатов
+    // 
+    cvNamedWindow("Raw", 1);
+    cvNamedWindow("Threshold", 1);
+    cvNamedWindow("Adaptive Threshold", 1);
+     
+    // Вывод результатов
+    // 
+    cvShowImage("Raw", Igray);
+    cvShowImage("Threshold", It);
+    cvShowImage("Adaptive Threshold", Iat);
+    cvWaitKey(0);
+     
+    // Освобождение занимаемых ресурсов
+    // 
+    cvReleaseImage( &Igray );
+    cvReleaseImage( &It );
+    cvReleaseImage( &Iat );
+    cvDestroyWindow( "Raw" );
+    cvDestroyWindow( "Threshold" );
+    cvDestroyWindow( "Adaptive Threshold" );
+
+    return(0);
 }
 ```
+

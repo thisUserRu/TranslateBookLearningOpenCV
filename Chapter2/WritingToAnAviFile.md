@@ -9,8 +9,8 @@
 ```cpp
 // argv[1]: имя исходного видео файла
 // argv[2]: имя нового видео файла
-#include “cv.h”
-#include “highgui.h”
+#include <cv.h>
+#include <highgui.h>
 
 int main( int argc, char* argv[] ) {
     CvCapture* capture = 0;                     // Переменная захвата
