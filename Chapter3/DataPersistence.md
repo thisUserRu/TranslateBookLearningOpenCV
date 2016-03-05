@@ -44,7 +44,7 @@ cvWriteInt( fs, "frame_count", 10 );                    // Указание ко
 cvStartWriteStruct( fs, "frame_size", CV_NODE_SEQ );    // Создание вложенного узла
 cvWriteInt( fs, 0, 320 );                               // Указание ширина кадра
 cvWriteInt( fs, 0, 200 );                               // Указание высоты кадра
-cvEndWriteStruct( fs );	                                // Окончание вложенного узла
+cvEndWriteStruct( fs );                                 // Окончание вложенного узла
 cvWrite( fs, "color_cvt_matrix", cmatrix );             // Указание матрицы преобразования
 cvReleaseFileStorage( &fs );                            // Освобождение занимаемой памяти
 ```

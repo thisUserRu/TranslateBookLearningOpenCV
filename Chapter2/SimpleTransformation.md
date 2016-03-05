@@ -7,8 +7,8 @@
 Пример 2-4. Загрузка и сглаживание изображения с последующим отображением результата на экране
 
 ```cpp
-#include “cv.h”
-#include “highgui.h”
+#include <cv.h>
+#include <highgui.h>
 
 void TransformImg( IplImage* image ) {
     cvNamedWindow( "Transform-in" );    // Окно для отображения исходного изображения
