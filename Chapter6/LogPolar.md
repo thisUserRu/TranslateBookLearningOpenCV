@@ -19,13 +19,13 @@
 *cvLogPolar()* - функция OpenCV для лог-полярных преобразований:
 
 ```cpp
-	void cvLogPolar(
-		 const CvArr* 	src
-		,CvArr* 		dst
-		,CvPoint2D32f 	center
-		,double 		m
-		,int 			flags = CV_INTER_LINEAR | CV_WARP_FILL_OUTLIERS
-	);
+void cvLogPolar(
+     const CvArr*   src
+    ,CvArr*         dst
+    ,CvPoint2D32f   center
+    ,double         m
+    ,int            flags = CV_INTER_LINEAR | CV_WARP_FILL_OUTLIERS
+);
 ```
 
 *src* и *dst* - это одноканальные или трехканальные цветные или серые изображения. Параметр *center* это центральная точка (![Формула 6-22 не найдена](Images/Frml_6_22.jpg), ![Формула 6-23 не найдена](Images/Frml_6_23.jpg)) лог-полярного преобразования; *m* коэффициент масштабирования, который должен быть выставлен таким образом, чтобы главные черты изображения доминировали в доступной области изображения. Параметр *flags* разрешает использование различных методов интерполяции. Можно использовать методы интерполяции из того же набора стандартных методов интерполяции, доступных в OpenCV (таблица 6-1). Методы интерполяции могут быть комбинированы с одним или обоими флагами *CV_WARP_FILL_OUTLIERS* (чтобы заполнить точки, которые иначе были-бы неопределенными) или *CV_WARP_INVERSE_MAP* (чтобы вычислить обратное преобразование из лог-полярных в прямоугольные координаты). 
@@ -36,47 +36,49 @@
 
 ```cpp
 // logPolar.cpp : Определяет точку входа для консольного приложения
-//
+// 
 #include <cv.h>
 #include <highgui.h>
 
 int main(int argc, char** argv) {
-	IplImage* 	src;
-	double 		M;
+    IplImage*   src;
+    double      M;
 
-	if( argc == 3 && (( src=cvLoadImage(argv[1],1)) != 0 )) {
-		M = atof(argv[2]);
+    if( argc == 3 && (( src=cvLoadImage(argv[1],1)) != 0 )) {
+        M = atof(argv[2]);
 
-		IplImage* dst 	= cvCreateImage( cvGetSize(src), 8, 3 );
-		IplImage* src2 	= cvCreateImage( cvGetSize(src), 8, 3 );
-		
-		cvLogPolar(
-			 src
-			,dst
-			,cvPoint2D32f(src->width/4,src->height/2)
-			,M
-			,CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS
-		);
+        IplImage* dst 	= cvCreateImage( cvGetSize(src), 8, 3 );
+        IplImage* src2 	= cvCreateImage( cvGetSize(src), 8, 3 );
 
-		cvLogPolar(
-			 dst
-			,src2
-			,cvPoint2D32f(src->width/4, src->height/2)
-			,M
-			,CV_INTER_LINEAR | CV_WARP_INVERSE_MAP
-		);
+        cvLogPolar(
+             src
+            ,dst
+            ,cvPoint2D32f(src->width/4,src->height/2)
+            ,M
+            ,CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS
+        );
 
-		cvNamedWindow( "log-polar", 1 );
-		cvShowImage( "log-polar", dst );
+        cvLogPolar(
+             dst
+            ,src2
+            ,cvPoint2D32f(src->width/4, src->height/2)
+            ,M
+            ,CV_INTER_LINEAR | CV_WARP_INVERSE_MAP
+        );
 
-		cvNamedWindow( "inverse log-polar", 1 );
-		cvShowImage( "inverse log-polar", src2 );
-		cvWaitKey();
-	}
-	return 0;
+        cvNamedWindow( "log-polar", 1 );
+        cvShowImage( "log-polar", dst );
+
+        cvNamedWindow( "inverse log-polar", 1 );
+        cvShowImage( "inverse log-polar", src2 );
+        cvWaitKey();
+    }
+    
+    return 0;
 }
 ```
 
 ![Рисунок 6-17 не найден](Images/Pic_6_17.jpg)
 
-Рисунок 6-17. Пример лог-полярного преобразования над изображением лося с центром показанным белым кругом на левом изображении. Результат преобразования - справа.
+Рисунок 6-17. Пример лог-полярного преобразования над изображением лося с центром показанным белым кругом на левом изображении. Результат преобразования - справа
+

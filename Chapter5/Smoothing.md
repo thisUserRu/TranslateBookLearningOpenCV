@@ -5,15 +5,15 @@
 В OpenCV есть пять различных операторов сглаживания. Все они поддерживаются через одну функцию *cvSmooth()*, которая принимает желаемый вариант сглаживания в качестве аргумента. 
 
 ```cpp
-	void cvSmooth(
-		 const CvArr*	src
-		,CvArr*			dst
-		,int			smoothtype	= CV_GAUSSIAN
-		,int			param1 		= 3
-		,int			param2		= 0
-		,double			param3		= 0
-		,double			param4		= 0
-	);
+void cvSmooth(
+     const  CvArr*src
+    ,CvArr* dst
+    ,int    smoothtype  = CV_GAUSSIAN
+    ,int    param1      = 3
+    ,int    param2      = 0
+    ,double param3      = 0
+    ,double param4      = 0
+);
 ```
 
 *src* и *dst* – исходное и конечное изображения. Функция *cvSmoth()* имеет четыре неинформативных аргумента *param1*, *param2*, *param3* и *param4*. Смысл этих аргументов зависит от значения *smoothtype*, который принимает любое из пяти значений, указанных в таблице 5-1 (при некоторых значениях *smoothtype* использование одного изображения в качестве *src* и *dst* не допускается).
